@@ -1,6 +1,7 @@
 (ns markov-texts.handler
   (:require [markov-texts.core :as core]
-            [ring.util.response :as response]))
+            [ring.middleware.json :refer [wrap-json-response]]
+            [ring.util.response :as r :refer [response]]))
 
 (defn init []
   (let [files ["aristotle.txt"
@@ -11,5 +12,17 @@
     (doseq [text files]
       (core/index-resource text))))
 
+(defn generate []
+  (core/generate core/indexed))
+
+(defn text-handler [req]
+  (response (generate)))
+
+(def json-handler
+  (wrap-json-response (fn [req]
+                        (response {:text (generate)}))))
+
 (defn app [req]
-  (response/response (core/generate core/indexed)))
+  (if (= :get (:request-method req))
+    (text-handler req)
+    (json-handler req)))
