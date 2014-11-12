@@ -6,13 +6,10 @@
 
 (defonce indexed (atom {}))
 
-(def xform
-  )
-
 (defn index
   "Index String data into index map m"
   [m ^String data]
-  (let [s (->> (re-seq #"[a-zA-Z'][a-zA-Z-_']*[,\.\?!:;]?(?=\s)" data)
+  (let [s (->> (re-seq #"[a-zA-Z'][a-zA-Z-']*[,\.\?!:;']?(?=\s)" data)
                (partition 4 1)
                (map (partial partition 2)))
         index (or m {})]
@@ -21,6 +18,18 @@
                 (-> all
                     (update-in [(peek path)] (fnil identity {}))
                     (update-in path (fnil inc 0))))) m s)))
+
+(defn- word-count [text]
+  (count (re-seq #"\w+" text)))
+
+(defn sentences-from [text]
+  (let [n (gen/weighted {20 4, 30 5, 45 1})
+        sentences (drop 1 (str/split text #"[\.!\?] +(?=[A-Z])"))]
+    (loop [acc [(first sentences)]
+           more (next sentences)]
+      (if (and more (> n (apply + (map word-count (conj acc (first more))))))
+        (recur (conj acc (first more)) (next more))
+        (str (str/join ". " acc) ".")))))
 
 (defn generate
   "Using atom a, generate a sentence"
@@ -32,11 +41,7 @@
                       (gen/weighted d))]
        (if (and d nextword (< (count acc) 120))
          (recur (conj acc nextword))
-         (let [st (->> acc
-                       flatten
-                       (str/join " "))
-               sentences (take (gen/weighted {1 2, 2 5, 3 1}) (drop 1 (str/split st #"[\.!\?] +(?=[A-Z])")))]
-           (str (str/join ". " sentences) ".")))))))
+         (sentences-from (->> acc flatten (str/join " "))))))))
 
 (defn index-resource [text]
   (with-open [file (InputStreamReader. (.openStream (io/resource text)))]
