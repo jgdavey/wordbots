@@ -4,25 +4,40 @@
             [clojure.java.io :as io])
   (:import [java.io InputStreamReader]))
 
-(defonce indexed (atom {}))
-
-(defn index
-  "Index String data into index map m"
-  [m ^String data]
-  (let [s (->> (re-seq #"[a-zA-Z'][a-zA-Z-']*[,\.\?!:;']?(?=\s)" data)
-               (partition 4 1)
-               (map (partial partition 2)))
-        index (or m {})]
-    (reduce (fn [all v]
-              (let [path (mapv vec v)]
-                (-> all
-                    (update-in [(peek path)] (fnil identity {}))
-                    (update-in path (fnil inc 0))))) m s)))
+;; Helpers
+(def increment (fnil inc 0))
 
 (defn- word-count [text]
   (count (re-seq #"\w+" text)))
 
-(defn sentences-from [text]
+;; Indexing
+(defonce indexed (atom {}))
+
+(defn- index-path
+  "Given an index and pair, updates the index to
+  increment the count of first followed by second occurences"
+  [idx pair]
+  (update-in idx (mapv vec pair) increment))
+
+(defn index
+  "Index String data into index map m"
+  [m ^String data]
+  (->> (re-seq #"[a-zA-Z'][a-zA-Z-']*[,\.\?!:;']?(?=\s)" data)
+               (partition 4 1)
+               (map (partial partition 2))
+    (reduce index-path m)))
+
+(defn index-resource
+  "Read and index a resource from classpath. Works in jar files as well."
+  [text]
+  (with-open [file (InputStreamReader. (.openStream (io/resource text)))]
+    (swap! indexed index (slurp file)))
+  :ok)
+
+;; Generation
+(defn sentences-from
+  "Given a bunch of text, return a reasonable sentence or two."
+  [text]
   (let [n (gen/weighted {20 4, 30 5, 45 1})
         sentences (drop 1 (str/split text #"[\.!\?] +(?=[A-Z])"))]
     (loop [acc [(first sentences)]
@@ -43,24 +58,14 @@
          (recur (conj acc nextword))
          (sentences-from (->> acc flatten (str/join " "))))))))
 
-(defn index-resource [text]
-  (with-open [file (InputStreamReader. (.openStream (io/resource text)))]
-    (swap! indexed index (slurp file)))
-  :ok)
-
 (comment
 
-(defonce kjv (slurp "http://www.gutenberg.org/cache/epub/10/pg10.txt"))
-(def i (atom {}))
-(swap! i index kjv)
-
 (reset! indexed {})
-(index-resource "texts")
-
-(generate indexed)
-
 (markov-texts.handler/init)
 
-(io/file (io/resource "aristotle.txt"))
+(generate)
+
+(with-open [w (clojure.java.io/writer "ex.edn")]
+  (clojure.pprint/pprint (deref indexed) w))
 
 )
