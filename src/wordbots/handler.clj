@@ -1,31 +1,20 @@
 (ns wordbots.handler
   (:require [wordbots.steambot :as steambot]
             [ring.middleware.json :refer [wrap-json-response]]
+            [compojure.core :refer [defroutes GET POST]]
             [ring.util.response :as r :refer [response]]))
 
-(defn- init-steambot []
-  (let [files ["aristotle.txt"
-               "kafka.txt"
-               "nietzsche.txt"
-               "russell.txt"
-               "steam.txt"]]
-    (doseq [text files]
-      (steambot/index-resource text))))
-
 (defn init []
-  (init-steambot))
+  (steambot/init))
 
-(defn generate []
-  (steambot/generate steambot/indexed))
+(defn steam []
+  (steambot/generate))
 
-(defn text-handler [req]
-  (response (generate)))
+(defn json [f]
+  (wrap-json-response (fn [req] (response {:text (f)}))))
 
-(def json-handler
-  (wrap-json-response (fn [req]
-                        (response {:text (generate)}))))
-
-(defn app [req]
-  (if (= :get (:request-method req))
-    (text-handler req)
-    (json-handler req)))
+(defroutes app
+  (GET "/" [] (steam))
+  (POST "/" [] (json steam))
+  (GET "/steam" [] (steam))
+  (POST "/steam" [] (json steam)))

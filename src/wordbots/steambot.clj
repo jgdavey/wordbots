@@ -13,6 +13,12 @@
 ;; Indexing
 (defonce indexed (atom {}))
 
+(def texts ["aristotle.txt"
+            "kafka.txt"
+            "nietzsche.txt"
+            "russell.txt"
+            "steam.txt"])
+
 (defn- index-path
   "Given an index and pair, updates the index to
   increment the count of first followed by second occurences"
@@ -58,15 +64,14 @@
          (recur (conj acc nextword))
          (sentences-from (->> acc flatten (str/join " "))))))))
 
+(defn init []
+  (doseq [text texts]
+    (index-resource text)))
+
 (comment
 
 (reset! indexed {})
-(require 'wordbots.handler :reload)
-(wordbots.handler/init)
-
+(init)
 (generate)
-
-(with-open [w (clojure.java.io/writer "ex.edn")]
-  (clojure.pprint/pprint (deref indexed) w))
 
 )
