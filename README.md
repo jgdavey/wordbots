@@ -1,4 +1,6 @@
-# markov-texts
+# wordbots
+
+Bots, mostly for slack room.
 
 This project uses [Leinignen](https://github.com/technomancy/leiningen).
 

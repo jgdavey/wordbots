@@ -1,4 +1,4 @@
-(ns markov-texts.core
+(ns wordbots.core
   (:require [clojure.string :as str]
             [clojure.data.generators :as gen]
             [clojure.java.io :as io])
@@ -61,7 +61,7 @@
 (comment
 
 (reset! indexed {})
-(markov-texts.handler/init)
+(wordbots.handler/init)
 
 (generate)
 

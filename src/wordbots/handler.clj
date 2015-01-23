@@ -1,5 +1,5 @@
-(ns markov-texts.handler
-  (:require [markov-texts.core :as core]
+(ns wordbots.handler
+  (:require [wordbots.core :as core]
             [ring.middleware.json :refer [wrap-json-response]]
             [ring.util.response :as r :refer [response]]))
 
