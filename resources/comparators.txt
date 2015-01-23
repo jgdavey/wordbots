@@ -1,0 +1,102 @@
+better
+bigger
+bluer
+browner
+bumpier
+closer
+colder
+cooler
+cruder
+crunchier
+crustier
+curlier
+dirtier
+drier
+drunker
+dustier
+earlier
+easier
+faster
+fatter
+finer
+fonder
+fuzzier
+gentler
+greasier
+greater
+greener
+grittier
+grosser
+grubbier
+grumpier
+harder
+harsher
+healthier
+holier
+hotter
+hungrier
+huskier
+larger
+later
+lazier
+littler
+longer
+looser
+louder
+lower
+mightier
+milder
+more arbitrary
+more deliberate
+more disgusting
+more distinguished
+more drab
+more elegant
+more exotic
+more experienced
+more foolish
+more frail
+more glorious
+more irreverant
+more popular
+more productive
+more profitable
+more sickly
+more sophisticated
+nearer
+older
+pinker
+quicker
+quieter
+raspier
+redder
+richer
+saltier
+scarier
+shaggier
+shakier
+sharper
+shorter
+silkier
+skinnier
+sleepier
+slower
+smaller
+smarter
+smoother
+speedier
+spicier
+stronger
+sturdier
+sweeter
+taller
+thicker
+tighter
+uglier
+warmer
+weaker
+weirder
+wetter
+worse
+younger
+yummier
