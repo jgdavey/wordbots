@@ -1,4 +1,4 @@
-(ns wordbots.core
+(ns wordbots.steambot
   (:require [clojure.string :as str]
             [clojure.data.generators :as gen]
             [clojure.java.io :as io])
@@ -61,6 +61,7 @@
 (comment
 
 (reset! indexed {})
+(require 'wordbots.handler :reload)
 (wordbots.handler/init)
 
 (generate)

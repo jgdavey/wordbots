@@ -1,19 +1,22 @@
 (ns wordbots.handler
-  (:require [wordbots.core :as core]
+  (:require [wordbots.steambot :as steambot]
             [ring.middleware.json :refer [wrap-json-response]]
             [ring.util.response :as r :refer [response]]))
 
-(defn init []
+(defn- init-steambot []
   (let [files ["aristotle.txt"
                "kafka.txt"
                "nietzsche.txt"
                "russell.txt"
                "steam.txt"]]
     (doseq [text files]
-      (core/index-resource text))))
+      (steambot/index-resource text))))
+
+(defn init []
+  (init-steambot))
 
 (defn generate []
-  (core/generate core/indexed))
+  (steambot/generate steambot/indexed))
 
 (defn text-handler [req]
   (response (generate)))
