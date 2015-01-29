@@ -1,23 +1,10 @@
 (ns wordbots.madbot
   (:require [clojure.string :as str]
             [clojure.java.io :as io]
+            [com.joshuadavey.vecset :as v :refer [vecset]]
             [wordbots.util :refer [lines paragraphs]]))
 
 (declare index-text)
-
-(set! *warn-on-reflection* true)
-
-(deftype Index [^clojure.lang.IPersistentSet lookup ^clojure.lang.IPersistentVector access]
-  clojure.lang.IFn
-  (invoke [this obj] (lookup obj))
-  (applyTo [this args] (clojure.lang.AFn/applyToHelper this args))
-  clojure.lang.ILookup
-  (valAt [this key] (.get lookup key))
-  (valAt [this key not-found] (throw (UnsupportedOperationException.)))
-  clojure.lang.Indexed
-  (nth [this n] (.nth access n))
-  (nth [this n not-found] (.nth access n not-found))
-  (count [this] (.count access)))
 
 (defrecord Token [word part]
   Object
@@ -66,7 +53,7 @@
   (let [words #(->> (io/resource %) slurp lines)]
     (doseq [[part file] mappings]
       (let [w (words file)]
-        (swap! index assoc part (->Index (set w) w)))))
+        (swap! index assoc part (vecset w)))))
   (let [proverb-texts (->> (io/resource "proverbs.txt") slurp paragraphs)]
     (reset! proverbs (mapv index-text proverb-texts))))
 
