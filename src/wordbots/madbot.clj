@@ -54,7 +54,7 @@
     (doseq [[part file] mappings]
       (let [w (words file)]
         (swap! index assoc part (vecset w)))))
-  (let [proverb-texts (->> (io/resource "proverbs.txt") slurp paragraphs)]
+  (let [proverb-texts (->> (io/resource "proverbs.txt") slurp lines)]
     (reset! proverbs (mapv index-text proverb-texts))))
 
 (defn generate []
