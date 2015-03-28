@@ -9,9 +9,9 @@ Conan
 Conjoined twins
 Darth Vader
 Dexter
-Disembodied Head
+Diana
 E.T.
-Everyone at burning man
+Everyone at Burning Man
 Forrest Gump
 Frankenstein
 Freddy
@@ -27,39 +27,47 @@ Hermione
 Hillary Clinton
 Homer
 Hunchback
-Identical twins
 Iron Man
 Jack Bauer
-Jason
 Justin Bieber
 Katniss
+Limp Bizkit
 Literally Insane Clown Posse
 Lucha Libre Wrestler
 Macgyver
+Marian Phelan
 Mario Brothers
+Mark Zuckerberg
 Martha Stewart
 Meat Loaf
 Michael Jackson
+Mike Ditka
 Mike Tyson
 Miley Cyrus
 Mr. Rogers
 Obama
 Pikachu
 Rambo
+Richard Stallman
 Robin Hood
 Sherlock Holmes
+Skeletor
 Stephen Hawking
 Terminator
+Wilford Brimley
 Willy Wonka
 a Nigerian prince
 a Reggae band
 a Spartan
 a T-Rex
+a barista
+a billion Brazilians
 a billionaire playboy
 a blob
 a bodybuilder
 a boy band
 a boy scout
+a buffalo
 a bull
 a cactus
 a carnie
@@ -77,7 +85,10 @@ a dolphin
 a dragon
 a fainting goat
 a femme fatale
+a gaggle of front-end developers
 a giant squid
+a giant squid
+a giggling gator
 a giraffe
 a girl scout
 a gladiator
@@ -94,6 +105,7 @@ a mafia don
 a mermaid
 a mime
 a moose
+a muffin robot
 a mummy
 a musketeer
 a ninja
@@ -101,6 +113,7 @@ a nudist
 a pet rock
 a pirate
 a polar bear
+a professional juggler
 a psychic
 a pterodactyl
 a queen
@@ -130,6 +143,7 @@ a vampire
 a vampire slayer
 a vegan
 a velociraptor
+a venture capitalist
 a viking
 a werewolf
 a whale
@@ -138,16 +152,21 @@ a wizard
 a wooly mammoth
 a zombie
 an Apache warrior
+an Elvis impersonator
 an alien
 an angel
 an assassin
 an eagle
+an eggplant
 an electric eel
 an emperor penguin
 an evil doll
 an octopus
+an old-timey soda jerk
 an olympic gymnast
 an owl
+disembodied head
+identical twins
 my boss
 my ex
 my significant other
@@ -157,6 +176,7 @@ the Grim Reaper
 the Hulk
 the Illuminati
 the Kardashians
+the KoolAid man
 the Marshmallow Man
 the Men in Black
 the Pope
@@ -164,4 +184,6 @@ the Statue of Liberty
 the UN
 the Ultimate Fighting Champion
 the devil
+your grandma
 your mom
+your uncle
