@@ -18,6 +18,9 @@ afraid of nachos
 afraid of water
 agoraphobic
 allergic to all animals
+allergic to mayonnaise
+allergic to peanut butter
+allergic to violence
 armed with Axe
 armed with Cupid's bow
 armed with a bacon-wrapped baseball bat
@@ -48,6 +51,7 @@ armed with a sniper rifle
 armed with a superglue fire hose
 armed with a tranquilizer gun
 armed with a trident
+armed with an aluminum toothpaste-tube of mayonnaise
 armed with an impenetrable shield
 armed with an infinite sausage lasso
 armed with catarangs
@@ -103,7 +107,6 @@ can run 200 mph but only in a straight line
 can see 3 seconds into the future
 can stop time while holding breath
 can stretch like rubber
-can summon am army internet trolls
 can summon anything from a hardware store
 can take the form of anything they touch
 can take the form of anything water-based
@@ -116,6 +119,7 @@ can walk through sold objects
 can't see
 can't stop clapping
 can't stop dancing
+can't stop farting
 can't stop laughing
 can't stop sobbing
 can't turn left
@@ -163,6 +167,7 @@ has adamantium skeleton
 has an invisible cloak
 has an invisible jet
 has feet instead of hands
+has hair of a Greek god
 has hands instead of feet
 has jellyfish instead of hands
 has majestic flaming antlers growing out of head
@@ -205,6 +210,10 @@ with _ as a 500-pound pet
 with _ as a sidekick
 with _ as a sidekick
 with _ as a sidekick
+with a sufficiently puckered sphincter
+with an army of girlscouts
 with laser eyes
 with the head of _
-with the power to control opponetent's digestive system
+with the head of _
+with the head of _
+with the power to control opponent's digestive system

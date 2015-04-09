@@ -17,6 +17,7 @@ Frankenstein
 Freddy
 French bulldog
 Gandhi
+Gene Garbaccio
 Genghis Khan
 George W. Bush
 Google
@@ -30,10 +31,8 @@ Hunchback
 Iron Man
 Jack Bauer
 Justin Bieber
-Katniss
 Limp Bizkit
 Literally Insane Clown Posse
-Lucha Libre Wrestler
 Macgyver
 Marian Phelan
 Mario Brothers
@@ -56,6 +55,7 @@ Stephen Hawking
 Terminator
 Wilford Brimley
 Willy Wonka
+Zeljko
 a Nigerian prince
 a Reggae band
 a Spartan
@@ -81,6 +81,7 @@ a crazy cat lady
 a crocodile hunter
 a demon
 a demon-possessed car
+a disembodied head
 a dolphin
 a dragon
 a fainting goat
@@ -165,7 +166,6 @@ an octopus
 an old-timey soda jerk
 an olympic gymnast
 an owl
-disembodied head
 identical twins
 my boss
 my ex
