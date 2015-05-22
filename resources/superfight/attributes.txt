@@ -1,13 +1,8 @@
-10 of them
 10 stories tall
-100 of them
 100 stories tall
-3 of them
-3 stories tall
 3 stories tall
 3-foot fingernails
 50 of them
-6 inches tall
 6 inches tall
 9 feet tall
 a chronic hair-eater
@@ -25,6 +20,7 @@ armed with Axe
 armed with Cupid's bow
 armed with a bacon-wrapped baseball bat
 armed with a barbed-wire net
+armed with a bow and unlimited arrows
 armed with a cannon
 armed with a catapult and unlimited livestock
 armed with a cattle prod
@@ -59,7 +55,6 @@ armed with dynamite
 armed with ghost pepper spray
 armed with holy hand grenades
 armed with nunchucks
-armer with a bow and unlimited arrows
 balancing on a circus ball
 being guarded by the secret service
 believes they are invisible
@@ -191,10 +186,8 @@ in a jet fighter
 in a space suit
 inside a giant hamster ball
 inside a giant robotic version of _
-inside a giant robotic version of _
 invisible
 is a 1000 years old
-is a Belieber and is convinced opponent means Bieber bodily harm
 is a baby
 is a hoarder
 is a hypnotist

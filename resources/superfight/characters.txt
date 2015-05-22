@@ -1,13 +1,21 @@
 101 Dalmatians
 Abraham Lincoln
+Amy
+Andrew
 Barney
+Brian Dunn
 Bruce Lee
+Cameron
 Canada
 Carl Weathers
+Chase
+Chris Erin
 Chuck Norris
 Conan
 Conjoined twins
+Daniel
 Darth Vader
+Derek
 Dexter
 Diana
 E.T.
@@ -28,31 +36,42 @@ Hermione
 Hillary Clinton
 Homer
 Hunchback
+Insane Clown Posse
 Iron Man
+JFK
+Jack
 Jack Bauer
+Jake
+Jon Jackson
+Josh Davey
 Justin Bieber
 Limp Bizkit
-Literally Insane Clown Posse
+Lynyrd Skynyrd
 Macgyver
 Marian Phelan
 Mario Brothers
 Mark Zuckerberg
 Martha Stewart
+Matt Polito
 Meat Loaf
 Michael Jackson
 Mike Ditka
+Mike Fretto
 Mike Tyson
 Miley Cyrus
+Mr. Micah Cooper
 Mr. Rogers
 Obama
 Pikachu
 Rambo
 Richard Stallman
 Robin Hood
+Rye
 Sherlock Holmes
 Skeletor
 Stephen Hawking
 Terminator
+Vic Ramon
 Wilford Brimley
 Willy Wonka
 Zeljko
@@ -168,7 +187,6 @@ an olympic gymnast
 an owl
 identical twins
 my boss
-my ex
 my significant other
 the Doctor
 the Dude
