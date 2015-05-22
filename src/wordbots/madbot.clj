@@ -14,12 +14,12 @@
 (def proverbs (atom []))
 
 (def mappings
-  {:adjective  "adjectives.txt"
-   :action     "actions.txt"
-   :object     "objects.txt"
-   :animal     "animals.txt"
-   :body-part  "body_parts.txt"
-   :comparator "comparators.txt"})
+  {:adjective  "madbot/adjectives.txt"
+   :action     "madbot/actions.txt"
+   :object     "madbot/objects.txt"
+   :animal     "madbot/animals.txt"
+   :body-part  "madbot/body_parts.txt"
+   :comparator "madbot/comparators.txt"})
 
 (defn categorize [w]
   (let [word (first (re-seq #"\w+" w))]
@@ -54,7 +54,7 @@
     (doseq [[part file] mappings]
       (let [w (words file)]
         (swap! index assoc part (vecset w)))))
-  (let [proverb-texts (->> (io/resource "proverbs.txt") slurp lines)]
+  (let [proverb-texts (->> (io/resource "madbot/proverbs.txt") slurp lines)]
     (reset! proverbs (mapv index-text proverb-texts))))
 
 (defn generate []
