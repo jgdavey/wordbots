@@ -66,7 +66,7 @@
 
 (defn init []
   (doseq [text texts]
-    (index-resource text)))
+    (index-resource (str "steambot/" text))))
 
 (comment
 
