@@ -9,6 +9,7 @@
                  [compojure "1.4.0"]
                  [instaparse "1.4.1" :exclusions [org.clojure/clojure]]
                  [clj-http "2.0.0"]
+                 [ring/ring-jetty-adapter "1.4.0"]
                  [ring/ring-json "0.4.0"]]
   :plugins [[lein-ring "0.9.6" :exclusions [org.clojure/clojure]]]
   :ring {:init wordbots.handler/init
