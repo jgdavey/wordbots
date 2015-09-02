@@ -1,41 +1,67 @@
 (ns wordbots.handler
-  (:require [wordbots.steambot :as steambot]
+  (:require [wordbots.protocols :as p]
+            [wordbots.steambot :as steambot]
             [wordbots.madbot :as madbot]
             [wordbots.fightbot :as fightbot]
             [wordbots.startupbot :as startupbot]
             [ring.middleware.json :refer [wrap-json-response]]
+            [clout.core :as clout]
             [compojure.core :refer [defroutes GET POST]]
             [ring.util.response :as r :refer [response]]))
 
+(def bots
+  {(steambot/bot)   ["/" "/steam" "/steambot"]
+   (madbot/bot)     ["/madbot" "/wisdom"]
+   (startupbot/bot) ["/startup" "/startupbot"]
+   (fightbot/bot)   ["/fight" "/fightbot"]
+   })
+
+(def ^:private routes
+  (reduce-kv (fn [all bot paths]
+            (into all (map vector
+                         (map clout/route-compile paths)
+                         (repeat bot))))
+          [] bots))
+
 (defn init []
-  (madbot/init)
-  (steambot/init)
-  (startupbot/init)
-  (fightbot/init))
+  (doseq [bot (keys bots)]
+    (p/init bot)))
 
-(defn steam []
-  (steambot/generate))
+(defn- find-bot [req]
+  (some (fn [[route bot]]
+          (when (clout/route-matches route req)
+            bot))
+        routes))
 
-(defn mad []
-  (madbot/generate))
+(defn wrap-response [handler]
+  (fn [req]
+    (let [resp (handler req)]
+      (if (and (= (:status resp 200))
+               (= :post (:request-method req)))
+        (response {:text (:body resp)})
+        resp))))
 
-(defn fight []
-  (fightbot/generate))
+(defn generate [req]
+  (if-let [bot (find-bot req)]
+    (response (p/generate bot (:body req)))
+    (r/not-found "No bot")))
 
-(defn startup []
-  (startupbot/generate))
+(def app
+  (-> generate
+      wrap-response
+      wrap-json-response))
 
-(defn json [f]
-  (wrap-json-response (fn [req] (response {:text (f)}))))
+(comment
 
-(defroutes app
-  (GET "/" [] (steam))
-  (POST "/" [] (json steam))
-  (GET "/steambot" [] (steam))
-  (POST "/steambot" [] (json steam))
-  (GET "/madbot" [] (mad))
-  (POST "/madbot" [] (json mad))
-  (GET "/startup" [] (startup))
-  (POST "/startup" [] (json startup))
-  (GET "/fight" [] (fight))
-  (POST "/fight" [] (json fight)))
+(clojure.pprint/pprint routes)
+(init)
+
+; start server
+(require 'ring.adapter.jetty)
+(def server
+  (ring.adapter.jetty/run-jetty #'app {:port 8000 :join? false}))
+
+; stop server
+(.stop server)
+
+)

@@ -1,7 +1,8 @@
 (ns wordbots.steambot
   (:require [clojure.string :as str]
             [clojure.data.generators :as gen]
-            [clojure.java.io :as io])
+            [clojure.java.io :as io]
+            [wordbots.protocols :as p])
   (:import [java.io InputStreamReader]))
 
 ;; Helpers
@@ -9,9 +10,6 @@
 
 (defn- word-count [text]
   (count (re-seq #"\w+" text)))
-
-;; Indexing
-(defonce indexed (atom {}))
 
 (def texts ["aristotle.txt"
             "kafka.txt"
@@ -35,12 +33,10 @@
 
 (defn index-resource
   "Read and index a resource from classpath. Works in jar files as well."
-  ([text]
-   (index-resource indexed text))
-  ([index-atom text]
-   (with-open [file (InputStreamReader. (.openStream (io/resource text)))]
-     (swap! index-atom index (slurp file)))
-   :ok))
+  [index-atom text]
+  (with-open [file (InputStreamReader. (.openStream (io/resource text)))]
+    (swap! index-atom index (slurp file)))
+  :ok)
 
 ;; Generation
 (defn sentences-from
@@ -54,26 +50,33 @@
         (recur (conj acc (first more)) (next more))
         (str (str/join ". " acc) ".")))))
 
-(defn generate
-  "Using atom a, generate a sentence"
-  ([] (generate indexed))
-  ([a]
-   (loop [acc [(key (rand-nth (seq @a)))]]
-     (let [d (get @a (peek acc))
-           nextword (when (pos? (count d))
-                      (gen/weighted d))]
-       (if (and d nextword (< (count acc) 120))
-         (recur (conj acc nextword))
-         (sentences-from (->> acc flatten (str/join " "))))))))
+(defn generate*
+  "Using index idx, generate a sentence"
+  [idx]
+  (loop [acc [(key (rand-nth (seq idx)))]]
+    (let [d (get idx(peek acc))
+          nextword (when (pos? (count d))
+                     (gen/weighted d))]
+      (if (and d nextword (< (count acc) 120))
+        (recur (conj acc nextword))
+        (sentences-from (->> acc flatten (str/join " ")))))))
 
-(defn init []
-  (doseq [text texts]
-    (index-resource (str "steambot/" text))))
+(defrecord Markovbot [a texts]
+  p/Bot
+  (init [_]
+    (doseq [text texts]
+      (index-resource a text)))
+  (generate [_ _]
+    (generate* @a)))
+
+(defn bot []
+  (->Markovbot (atom {})
+               (map (partial str "steambot/") texts)))
 
 (comment
 
-(reset! indexed {})
-(init)
-(generate)
+(def b (bot))
+(p/init b)
+(p/generate b [])
 
 )

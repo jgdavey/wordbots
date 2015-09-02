@@ -1,5 +1,6 @@
 (ns wordbots.startupbot
-  (:require [clj-http.client :as client]))
+  (:require [wordbots.protocols :as p]
+            [clj-http.client :as client]))
 
 (def ^:static api "http://itsthisforthat.com/api.php?json")
 
@@ -13,18 +14,25 @@
                          "So it's like a %s for %s."
                          "The idea is simple. It's a %s for %s."])
 
-(defn init []) ;; no-op
-
 (defn fetch []
   (some-> (client/get api {:as :json})
           :body))
 
-(defn generate []
+(defn generate* []
   (let [resp (fetch)]
     (format (rand-nth responses) (:this resp) (:that resp))))
 
+(defrecord Startupbot []
+  p/Bot
+  (init [_])
+  (generate [_ req] (generate*)))
+
+(def sb (->Startupbot))
+(def bot (constantly sb))
+
+
 (comment
 
-(generate)
+(p/generate sb {})
 
 )

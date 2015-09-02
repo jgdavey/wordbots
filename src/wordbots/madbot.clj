@@ -1,6 +1,7 @@
 (ns wordbots.madbot
   (:require [clojure.string :as str]
             [clojure.java.io :as io]
+            [wordbots.protocols :as p]
             [com.joshuadavey.vecset :as v :refer [vecset]]
             [wordbots.util :refer [lines paragraphs]]))
 
@@ -49,7 +50,7 @@
       (recur (map possibly-replace tokens) (dec i))
       (str/join t))))
 
-(defn init []
+(defn init* []
   (let [words #(->> (io/resource %) slurp lines)]
     (doseq [[part file] mappings]
       (let [w (words file)]
@@ -57,14 +58,19 @@
   (let [proverb-texts (->> (io/resource "madbot/proverbs.txt") slurp lines)]
     (reset! proverbs (mapv index-text proverb-texts))))
 
-(defn generate []
+(defn generate* []
   (madlib (rand-nth @proverbs)))
+
+(defrecord Madbot []
+  p/Bot
+  (init [_] (init*))
+  (generate [_ req] (generate*)))
+(def mb (->Madbot))
+(def bot (constantly mb))
 
 (comment
 
-(init)
-(generate)
-
-(>pprint (repeatedly 20 generate))
+(p/init mb)
+(p/generate mb {})
 
 )

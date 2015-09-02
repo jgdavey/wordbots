@@ -2,12 +2,13 @@
   (:require [clojure.string :as str]
             [clojure.java.io :as io]
             [com.joshuadavey.vecset :as v :refer [vecset]]
+            [wordbots.protocols :as p]
             [wordbots.util :refer [lines paragraphs]]))
 
 (def characters (atom (vecset)))
 (def attributes (atom (vecset)))
 
-(defn init []
+(defn init* []
   (let [file->lines #(->> (io/resource %) slurp lines)]
     (reset! characters (-> "superfight/characters.txt" file->lines vecset))
     (reset! attributes (-> "superfight/attributes.txt" file->lines vecset))
@@ -33,12 +34,19 @@
   (str (.toUpperCase (subs s 0 1))
        (subs s 1)))
 
-(defn generate []
+(defn generate* []
   (capitalize (str (str/join ", " (generate-character))
                    " *VS* "
                    (str/join ", " (generate-character)))))
 
+(defrecord Fightbot []
+  p/Bot
+  (init [_] (init*))
+  (generate [_ req] (generate*)))
+(def fb (->Fightbot))
+(def bot (constantly fb))
+
 (comment
-(init)
-(generate)
+(p/init fb)
+(p/generate fb {})
 )
