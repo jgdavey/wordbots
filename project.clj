@@ -8,6 +8,7 @@
                  [com.joshuadavey/vecset "0.2.0"]
                  [compojure "1.4.0"]
                  [instaparse "1.4.1" :exclusions [org.clojure/clojure]]
+                 [image-resizer  "0.1.7"]
                  [clj-http "2.0.0"]
                  [ring/ring-jetty-adapter "1.4.0"]
                  [ring/ring-json "0.4.0"]]

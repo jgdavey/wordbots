@@ -4,16 +4,21 @@
             [wordbots.madbot :as madbot]
             [wordbots.fightbot :as fightbot]
             [wordbots.startupbot :as startupbot]
+            [wordbots.memebot :as memebot]
             [ring.middleware.json :refer [wrap-json-response]]
             [clout.core :as clout]
             [compojure.core :refer [defroutes GET POST]]
             [ring.util.response :as r :refer [response]]))
+
+(def image-root "/tmp/images")
+(.mkdirs (java.io.File. image-root))
 
 (def bots
   {(steambot/bot)   ["/" "/steam" "/steambot"]
    (madbot/bot)     ["/madbot" "/wisdom"]
    (startupbot/bot) ["/startup" "/startupbot"]
    (fightbot/bot)   ["/fight" "/fightbot"]
+   (memebot/highbot image-root) ["/high" "/highbot"]
    })
 
 (def ^:private routes
@@ -43,8 +48,9 @@
 
 (defn generate [req]
   (if-let [bot (find-bot req)]
-    (response (p/generate bot (:body req)))
-    (r/not-found "No bot")))
+    (response (p/generate bot req))
+    (or (r/file-response (:uri req) {:root image-root})
+        (r/not-found "No bot"))))
 
 (def app
   (-> generate
