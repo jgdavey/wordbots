@@ -35,10 +35,12 @@
 
 (defn index-resource
   "Read and index a resource from classpath. Works in jar files as well."
-  [text]
-  (with-open [file (InputStreamReader. (.openStream (io/resource text)))]
-    (swap! indexed index (slurp file)))
-  :ok)
+  ([text]
+   (index-resource indexed text))
+  ([index-atom text]
+   (with-open [file (InputStreamReader. (.openStream (io/resource text)))]
+     (swap! index-atom index (slurp file)))
+   :ok))
 
 ;; Generation
 (defn sentences-from
