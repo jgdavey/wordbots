@@ -1,7 +1,7 @@
 (ns wordbots.memebot
   (:require [wordbots.memebot.image :as img]
             [wordbots.protocols :as p]
-            [wordbots.steambot :as markov]
+            [wordbots.startupbot :as startupbot]
             [clojure.java.io :as io]
             [image-resizer.core :as resizer]
             [clojure.string :as str])
@@ -52,22 +52,25 @@
       (ImageIO/write image *format* file))
     relative-path))
 
-
+(defn generate* [{:keys [request root-path top-caption bottom-caption images]}]
+  (let [prefix (str (name (:scheme request))
+                    "://"
+                    (get-in request [:headers "host"])
+                    "/")]
+    (->> (render-image (rand-nth images) top-caption bottom-caption)
+         (save-image root-path)
+         (str prefix))))
 
 (defn bot [root textbot images]
   (reify
     p/Bot
     (init [_] (p/init textbot))
     (generate [_ req]
-      (let [prefix (str (name (:scheme req))
-                        "://"
-                        (get-in req [:headers "host"])
-                        "/")
-            top (p/generate textbot req)
-            bottom (p/generate textbot req)]
-        (->> (render-image (rand-nth images) top bottom)
-             (save-image root)
-             (str prefix))))))
+      (generate* {:request req
+                  :root-path root
+                  :images images
+                  :top-caption (p/generate textbot req)
+                  :bottom-caption (p/generate textbot req)}))))
 
 (def ^:private team-photos
   (mapv (partial str "https://hashrocket-production.s3.amazonaws.com/uploads/rocketeer/profile_image")
@@ -99,7 +102,14 @@
          "/89/chad-brading.jpg"
          "/90/joshua-plicque.jpg"]))
 
-(defn highbot [root]
-  (bot root
-       (markov/->Markovbot (atom {}) ["erowid.txt"])
-       team-photos))
+(defn startup-image-bot [root]
+  (let [bot (startupbot/bot)]
+    (reify
+      p/Bot
+      (init [_] (p/init bot))
+      (generate [_ req]
+        (generate* {:request req
+                    :root-path root
+                    :images team-photos
+                    :top-caption "My Startup?"
+                    :bottom-caption (p/generate bot req)})))))

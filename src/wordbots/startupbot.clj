@@ -24,14 +24,15 @@
           (rand-nth (:this index))
           (rand-nth (:that index))))
 
+(defrecord Startupbot [index-atom]
+  p/Bot
+  (init [_]
+    (index index-atom))
+  (generate [_ _]
+    (generate* @index-atom)))
+
 (defn bot []
-  (let [idx (atom {:this [] :that []})]
-    (reify
-      p/Bot
-      (init [_]
-        (index idx))
-      (generate [_ _]
-        (generate* @idx)))))
+  (->Startupbot (atom {:this [] :that []})))
 
 (comment
 

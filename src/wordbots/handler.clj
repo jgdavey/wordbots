@@ -18,7 +18,7 @@
    (madbot/bot)     ["/madbot" "/wisdom"]
    (startupbot/bot) ["/startup" "/startupbot"]
    (fightbot/bot)   ["/fight" "/fightbot"]
-   (memebot/highbot image-root) ["/high" "/highbot"]
+   (memebot/startup-image-bot image-root) ["/startup-image" "/killer-idea"]
    })
 
 (def ^:private routes
