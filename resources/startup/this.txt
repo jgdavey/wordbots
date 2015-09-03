@@ -1,0 +1,105 @@
+1-800-Flowers
+Adultfriendfinder
+Airbnb
+Amazon
+Ancestry.com
+Ashley Madison
+Bang With Friends
+BitTorrent
+Cash4Gold
+Cryptocurrency
+Digg 2.0
+Dropbox
+Enron
+Facebook Marketplace
+FitBit
+Flickr
+Foursquare
+Game-based Incentive
+Google Analytics
+Google App Engine
+Green Tech Program
+Groupon
+Instacart
+KickStarter
+Kindle Fire App
+LinkedIn
+Linux
+ManPacks
+Match.com
+Netflix
+News Recommender
+Node.js Server
+OpenTable
+Overstock.com
+Pandora
+Perl 6
+Pinterest
+Playboy
+Reddit
+Salesforce.com
+Saturday Night Live
+Skynet
+SnapChat
+Starbucks
+Texts From Last Night
+Tumblr
+Uber
+WeedMaps
+Wikipedia
+Wordpress
+Yelp
+YouTube
+Zappos
+Zivity
+a CPA ad network
+a Google Glass App
+a Mac App
+a RESTful API
+a Twitter filter
+a big data management service
+a brick and mortar solution
+a collaborative filter
+a content distribution network
+a conversion funnel
+a crowdsourcing app
+a database abstraction layer
+a deal finder
+a digital magazine
+a distributed social network
+a jQuery Plugin
+a landing page
+a mapreduce query
+a meme generator
+a microblogging service
+a mobile ecosystem
+a neural network
+a new social platform
+a ponzi scheme
+a quadcopter
+a recommendation engine
+a shopping site
+a smartphone
+a social CRM
+a social game
+a social network
+a watch
+a wearable computer
+an API
+an Android app
+an SEO optimizer
+an aggregator
+an analytics platform
+an apartment guide
+an appstore
+an eco-friendly marketplace
+an iPhone App
+an online marketplace
+an unreadable CAPTCHA
+cloud storage
+digital music distribution
+iTunes
+realtime data
+the Amber Alert System
+the Internet of Things
+viral marketing
