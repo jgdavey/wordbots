@@ -92,7 +92,6 @@
          "/75/andrew-dennis.jpg"
          "/76/jonathan-jackson.jpg"
          "/78/micah-woods.jpg"
-         "/79/derek-parker.jpg"
          "/82/chase-mccarthy.jpg"
          "/84/chris-erin.jpg"
          "/85/carty-seay.jpg"
@@ -100,7 +99,10 @@
          "/87/mike-fretto.jpg"
          "/88/josh-branchaud.jpg"
          "/89/chad-brading.jpg"
-         "/90/joshua-plicque.jpg"]))
+         "/91/dorian-karter.jpg"
+         "/93/jason-cummings.jpg"
+         "/94/dillon-hafer.jpg"
+         "/95/nick-palaniuk.jpg"]))
 
 (defn startup-image-bot [root]
   (let [bot (startupbot/bot)]
