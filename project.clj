@@ -10,9 +10,10 @@
                  [instaparse "1.4.1" :exclusions [org.clojure/clojure]]
                  [image-resizer  "0.1.9"]
                  [clj-http "2.1.0"]
+                 [clj-tuple "0.2.2"]
                  [ring/ring-jetty-adapter "1.4.0"]
                  [ring/ring-json "0.4.0"]]
-  :plugins [[lein-ring "0.9.6" :exclusions [org.clojure/clojure]]]
+  :plugins [[lein-ring "0.9.7" :exclusions [org.clojure/clojure]]]
   :ring {:init wordbots.handler/init
          :handler wordbots.handler/app}
   :profiles {:uberjar {:aot :all}}
