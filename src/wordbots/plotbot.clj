@@ -11,10 +11,12 @@
 (defn init-texts [index]
   (with-open [rdr (io/reader (io/resource "plotbot/plots.txt") :encoding "ISO-8859-1")]
     (doseq [e (line-seq rdr)]
-      (swap! index m/index e tuple-size)))
+      (when (= 1 (rand-int 2)) ; coinflip
+        (swap! index m/index e tuple-size))))
   (with-open [rdr (io/reader (io/resource "erowid.txt"))]
     (doseq [e (line-seq rdr)]
-      (swap! index m/index e tuple-size))))
+      (when (= 1 (rand-int 4))
+        (swap! index m/index e tuple-size)))))
 
 (defn generate* [index]
   (m/generate* @index (key (rand-nth (seq (@index :start))))))
