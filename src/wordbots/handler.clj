@@ -5,6 +5,7 @@
             [wordbots.fightbot :as fightbot]
             [wordbots.startupbot :as startupbot]
             [wordbots.memebot :as memebot]
+            [wordbots.plotbot :as plotbot]
             [ring.middleware.json :refer [wrap-json-response]]
             [clout.core :as clout]
             [compojure.core :refer [defroutes GET POST]]
@@ -19,6 +20,7 @@
    (startupbot/bot) ["/startup" "/startupbot"]
    (fightbot/bot)   ["/fight" "/fightbot"]
    (memebot/startup-image-bot image-root) ["/startup-image" "/killer-idea"]
+   (plotbot/bot) ["/plot" "/movie-idea"]
    })
 
 (def ^:private routes
