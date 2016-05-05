@@ -63,6 +63,6 @@
      (let [d (get idx (peek acc))
            nextword (when (pos? (count d))
                       (gen/weighted d))]
-       (if (and d nextword (< (count acc) 150))
+       (if (and d nextword (< (count acc) 90))
          (recur (conj acc nextword))
          (->> acc flatten (str/join " ") ensure-trailing-punctuation))))))
