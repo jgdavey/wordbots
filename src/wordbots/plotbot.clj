@@ -15,7 +15,7 @@
         (swap! index m/index e tuple-size))))
   (with-open [rdr (io/reader (io/resource "erowid.txt"))]
     (doseq [e (line-seq rdr)]
-      (when (= 1 (rand-int 4))
+      (when (= 1 (rand-int 12))
         (swap! index m/index e tuple-size)))))
 
 (defn generate* [index]
