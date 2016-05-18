@@ -78,6 +78,7 @@
          "/14/marian-phelan.jpg"
          "/27/amy-mcillwain.jpg"
          "/3/cameron-daigle.jpg"
+         "/30/jon-allured.jpg"
          "/33/diana-mccann.jpg"
          "/35/matt-polito.jpg"
          "/36/brian-dunn.jpg"
@@ -96,13 +97,12 @@
          "/84/chris-erin.jpg"
          "/85/carty-seay.jpg"
          "/86/jake-worth.jpg"
-         "/87/mike-fretto.jpg"
          "/88/josh-branchaud.jpg"
-         "/89/chad-brading.jpg"
          "/91/dorian-karter.jpg"
          "/93/jason-cummings.jpg"
          "/94/dillon-hafer.jpg"
-         "/95/nick-palaniuk.jpg"]))
+         "/95/nick-palaniuk.jpg"
+         "/96/vidal-ekechukwu.jpg"]))
 
 (defn startup-image-bot [root]
   (let [bot (startupbot/bot)]
