@@ -1,4 +1,5 @@
 (ns wordbots.handler
+  (:gen-class)
   (:require [wordbots.protocols :as p]
             [wordbots.steambot :as steambot]
             [wordbots.madbot :as madbot]
@@ -7,6 +8,7 @@
             [wordbots.memebot :as memebot]
             [wordbots.plotbot :as plotbot]
             [ring.middleware.json :refer [wrap-json-response]]
+            [ring.adapter.jetty :refer [run-jetty]]
             [clout.core :as clout]
             [compojure.core :refer [defroutes GET POST]]
             [ring.util.response :as r :refer [response]]))
@@ -59,17 +61,6 @@
       wrap-response
       wrap-json-response))
 
-(comment
-
-(clojure.pprint/pprint routes)
-(init)
-
-; start server
-(require 'ring.adapter.jetty)
-(def server
-  (ring.adapter.jetty/run-jetty #'app {:port 8000 :join? false}))
-
-; stop server
-(.stop server)
-
-)
+(defn -main []
+  (init)
+  (run-jetty #'app {:port 4000}))
