@@ -5,7 +5,7 @@
                   [org.clojure/data.generators "0.1.2"]
                   [com.joshuadavey/vecset "0.2.0"]
                   [compojure "1.5.0"]
-                  [instaparse "1.4.1" :exclusions [org.clojure/clojure]]
+                  [instaparse "1.4.2" :exclusions [org.clojure/clojure]]
                   [image-resizer  "0.1.9"]
                   [clj-http "2.1.0"]
                   [clj-tuple "0.2.2"]
