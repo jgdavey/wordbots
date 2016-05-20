@@ -6,7 +6,6 @@ Ancestry.com
 Ashley Madison
 Bang With Friends
 BitTorrent
-Cash4Gold
 Dropbox
 Enron
 FitBit
@@ -23,9 +22,9 @@ Match.com
 Netflix
 OpenTable
 Pandora
-Perl 6
 Pinterest
 Playboy
+Rails 5
 Reddit
 Salesforce.com
 Saturday Night Live
@@ -39,21 +38,14 @@ Wikipedia
 Wordpress
 YouTube
 Zappos
-Zivity
-a CPA ad network
 a Google Glass App
-a big data management service
-a collaborative filter
+a brand loyalty program
 a crowdsourcing app
-a database abstraction layer
 a deal finder
 a digital magazine
 a fart machine
-a mapreduce query
 a meme generator
 a microblogging service
-a mobile ecosystem
-a neural network
 a new social platform
 a party button
 a ponzi scheme
@@ -61,20 +53,23 @@ a quadcopter
 a recommendation engine
 a shopping site
 a social network
+a trading website
 a watch
 a wearable computer
 an API
 an Android app
-an appstore
 an iPhone App
 an unreadable CAPTCHA
 cloud storage
-digital music distribution
 iTunes
+microloans
 political commentary
 realtime data
 rehab
 the Amber Alert System
+the Cloud
 the Internet
 the Internet of Things
 the Wiggles
+true brand engagement
+websockets

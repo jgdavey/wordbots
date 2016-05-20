@@ -43,13 +43,24 @@
             bot))
         routes))
 
+(defn html-response [resp]
+  (try
+    (let [uri (java.net.URI. (:body resp))]
+      (if (memebot/image? uri)
+        (-> resp
+          (assoc-in [:headers "Content-Type"] "text/html; charset=utf-8")
+          (assoc :body (str "<img src='" uri "' />")))
+        resp))
+    (catch Throwable t
+      resp)))
+
 (defn wrap-response [handler]
   (fn [req]
     (let [resp (handler req)]
       (if (and (= (:status resp 200))
                (= :post (:request-method req)))
         (response {:text (:body resp)})
-        resp))))
+        (html-response resp)))))
 
 (defn generate [req]
   (if-let [bot (find-bot req)]
@@ -66,3 +77,11 @@
   (init)
   (log/info "Starting jetty on port 4000")
   (run-jetty #'app {:port 4000}))
+
+(comment
+
+(init)
+(def server (run-jetty #'app {:port 4000 :join? false}))
+(.stop server)
+
+)

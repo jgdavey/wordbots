@@ -104,6 +104,9 @@
          "/95/nick-palaniuk.jpg"
          "/96/vidal-ekechukwu.jpg"]))
 
+(defn image? [^java.net.URI uri]
+  (.endsWith (.getPath uri) (str "." *format*)))
+
 (defn startup-image-bot [root]
   (let [bot (startupbot/bot)]
     (reify
