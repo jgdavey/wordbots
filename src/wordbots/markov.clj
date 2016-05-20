@@ -122,6 +122,4 @@
                         first
                         :tuples
                         tuples->sentence)]
-      (println (count r))
-      (println (count sentence))
       sentence)))

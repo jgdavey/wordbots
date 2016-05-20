@@ -2,6 +2,7 @@
   (:require [clojure.string :as str]
             [clojure.data.generators :as gen]
             [clojure.java.io :as io]
+            [wordbots.markov :as m]
             [wordbots.protocols :as p])
   (:import [java.io InputStreamReader]))
 
@@ -53,13 +54,8 @@
 (defn generate*
   "Using index idx, generate a sentence"
   [idx]
-  (loop [acc [(key (rand-nth (seq idx)))]]
-    (let [d (get idx(peek acc))
-          nextword (when (pos? (count d))
-                     (gen/weighted d))]
-      (if (and d nextword (< (count acc) 120))
-        (recur (conj acc nextword))
-        (sentences-from (->> acc flatten (str/join " ")))))))
+  (sentences-from
+    (m/generate idx {:target-length (rand-nth [20 80])})))
 
 (defrecord Markovbot [a texts]
   p/Bot
