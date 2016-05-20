@@ -1,5 +1,6 @@
 (ns wordbots.markov
   (:require [clojure.string :as str]
+            [clojure.core.async :as async :refer [chan <! >! go timeout close!]]
             [clojure.data.generators :as gen]
             [clj-tuple :refer [tuple]]
             [clojure.java.io :as io]))
