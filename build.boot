@@ -33,4 +33,5 @@
     (uber)
     (pom)
     (jar :main 'wordbots.handler)
+    (sift :include #{ #"^app\.jar$" })
     (target :dir #{"build"})))
