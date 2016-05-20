@@ -9,6 +9,7 @@
             [wordbots.plotbot :as plotbot]
             [ring.middleware.json :refer [wrap-json-response]]
             [ring.adapter.jetty :refer [run-jetty]]
+            [clojure.tools.logging :as log]
             [clout.core :as clout]
             [compojure.core :refer [defroutes GET POST]]
             [ring.util.response :as r :refer [response]]))
@@ -63,4 +64,5 @@
 
 (defn -main []
   (init)
+  (log/info "Starting jetty on port 4000")
   (run-jetty #'app {:port 4000}))

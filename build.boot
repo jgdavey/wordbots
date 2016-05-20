@@ -3,7 +3,9 @@
   :resource-paths #{"resources"}
   :dependencies '[[org.clojure/clojure "1.8.0"]
                   [org.clojure/data.generators "0.1.2"]
-                  [org.clojure/core.async  "0.2.374"]
+                  [org.clojure/core.async "0.2.374"]
+                  [org.clojure/tools.logging "0.3.1"]
+                  [org.slf4j/slf4j-simple "1.7.21"]
                   [com.joshuadavey/vecset "0.2.0"]
                   [compojure "1.5.0"]
                   [instaparse "1.4.2" :exclusions [org.clojure/clojure]]
