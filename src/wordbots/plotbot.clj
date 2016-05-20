@@ -19,7 +19,7 @@
         (swap! index m/index e tuple-size)))))
 
 (defn generate* [index]
-  (m/generate* @index (key (rand-nth (seq (@index :start))))))
+  (m/generate @index {:target-length 45, :timeout-ms 100}))
 
 (defrecord Markovbot [a]
   p/Bot

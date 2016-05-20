@@ -51,19 +51,77 @@
 (defn ensure-trailing-punctuation [^String string]
   (if (or (.endsWith string ".")
           (.endsWith string "!")
+          (.endsWith string ",")
           (.endsWith string "?"))
     string
     (str string ".")))
 
-(defn generate*
-  "Using index idx, (optionally starting at key k), generate a sentence"
-  ([idx]
-   (generate* idx (key (rand-nth (seq idx)))))
-  ([idx k]
-   (loop [acc [k]]
-     (let [d (get idx (peek acc))
-           nextword (when (pos? (count d))
-                      (gen/weighted d))]
-       (if (and d nextword (< (count acc) 90))
-         (recur (conj acc nextword))
-         (->> acc flatten (str/join " ") ensure-trailing-punctuation))))))
+(defn tuples->sentence [tuples]
+  (->> tuples flatten (str/join " ") ensure-trailing-punctuation))
+
+(defn weight-score [idx nextword]
+  (->> nextword (get idx) vals (reduce + 0)))
+
+(defn average-score [nodes]
+  (/ (reduce + 0 (map :score nodes)) (count nodes)))
+
+(defn generate-sequence
+  "Using index idx, starting at key k, generate sequence of tuples.
+  Stops at an :end, or after max tuples, whatever comes first."
+  [idx k max]
+  (loop [acc [k]]
+    (let [d (get idx (peek acc))
+          nextword (when (pos? (count d))
+                     (gen/weighted d))]
+      (if (and d nextword (< (count acc) max))
+        (recur (conj acc nextword))
+        acc))))
+
+(defn generate-1 [idx k]
+  (-> (generate-sequence idx k 90)
+      tuples->sentence))
+
+(defn produce-while-values
+  "Calls (f), adding to results channel, until :max number is reached or
+  :ms has elapsed. Closes results channel."
+  [results-chan f {:keys [max timeout-ms] :or {max 10 timeout-ms 100}}]
+  (go (loop [t (timeout timeout-ms)
+             n (async/to-chan (range max))]
+          (let [[v c] (async/alts! [t n])]
+            (if v
+              (do
+                (>! results-chan (f))
+                (recur t n))
+              (close! results-chan))))))
+
+(defn as-rel [tuple-sequence]
+  {:tuples tuple-sequence})
+
+(defn add-distance [target-words]
+  (fn [rel]
+    (assoc rel
+           :distance (Math/abs (- (* (-> rel :tuples count)
+                                     (-> rel :tuples first count)) target-words)))))
+
+(defn generate [idx {:keys [start-at
+                            target-length
+                            timeout-ms]
+                     :or {timeout-ms 100
+                          target-length 50}}]
+  (let [start-key (or start-at
+                      (rand-nth (keys (:start idx)))
+                      (rand-nth (keys idx)))
+        results (chan 1 (comp (map as-rel)
+                              (map (add-distance target-length))))]
+   (produce-while-values results
+                         (partial generate-sequence idx start-key (* target-length 2))
+                         {:max 100 :timeout-ms timeout-ms})
+    (let [r (async/<!! (async/into [] results))
+          sentence (->> r
+                        (sort-by :distance)
+                        first
+                        :tuples
+                        tuples->sentence)]
+      (println (count r))
+      (println (count sentence))
+      sentence)))
