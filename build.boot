@@ -13,7 +13,11 @@
                   [clj-http "2.1.0"]
                   [clj-tuple "0.2.2"]
                   [ring/ring-jetty-adapter "1.4.0"]
-                  [ring/ring-json "0.4.0"]])
+                  [ring/ring-json "0.4.0"]
+                  [deraen/boot-ctn "0.1.0" :scope "test"]])
+
+(require 'deraen.boot-ctn)
+(deraen.boot-ctn/init-ctn!)
 
 (task-options!
   pom {:project 'wordbots
