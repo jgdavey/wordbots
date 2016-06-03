@@ -43,19 +43,16 @@
 (defn sentences-from
   "Given a bunch of text, return a reasonable sentence or two."
   [text]
-  (let [n (gen/weighted {20 4, 30 5, 45 1})
-        sentences (drop 1 (str/split text #"[\.!\?] +(?=[A-Z])"))]
-    (loop [acc [(first sentences)]
-           more (next sentences)]
-      (if (and more (> n (apply + (map word-count (conj acc (first more))))))
-        (recur (conj acc (first more)) (next more))
-        (str (str/join ". " acc) ".")))))
+  (let [sentences (drop 1 (str/split text #"(?<=[\.!\?]) +(?=[A-Z][^\.])"))]
+    (str/join " " (if (< 2 (count sentences))
+                    (butlast sentences)
+                    sentences))))
 
 (defn generate*
   "Using index idx, generate a sentence"
   [idx]
   (sentences-from
-    (m/generate idx {:target-length (rand-nth [20 80])})))
+    (m/generate idx {:target-length (rand-nth [30 60])})))
 
 (defrecord Markovbot [a texts]
   p/Bot
@@ -74,5 +71,6 @@
 (def b (bot))
 (p/init b)
 (p/generate b [])
+(m/generate @(:a b) {})
 
 )
