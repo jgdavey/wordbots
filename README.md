@@ -2,7 +2,7 @@
 
 Bots, mostly for slack room.
 
-This project uses [Leinignen](https://github.com/technomancy/leiningen).
+This project uses [Boot](http://boot-clj.com/).
 
 ## Usage
 
