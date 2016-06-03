@@ -49,12 +49,16 @@
       (persistent! (reduce index-path (transient m) pairs)))))
 
 (defn ensure-trailing-punctuation [^String string]
-  (if (or (.endsWith string ".")
-          (.endsWith string "!")
-          (.endsWith string ",")
-          (.endsWith string "?"))
-    string
-    (str string ".")))
+  (let [c (last string)
+        s (butlast string)]
+    (case c
+      \. string
+      \! string
+      \? string
+      \, (str s ".")
+      \: (str s ".")
+      \; (str s ".")
+      (str string "."))))
 
 (defn tuples->sentence [tuples]
   (->> tuples flatten (str/join " ") ensure-trailing-punctuation))
