@@ -52,7 +52,7 @@
   "Using index idx, generate a sentence"
   [idx]
   (sentences-from
-    (m/generate idx {:target-length (rand-nth [30 60])})))
+    (m/generate-sequence idx 2 [:start :start] (rand-nth [30 60]))))
 
 (defrecord Markovbot [a texts]
   p/Bot
@@ -70,6 +70,7 @@
 
 (def b (bot))
 (p/init b)
+(m/generate-sequence @(:a b) 2 [:start :start] 30)
 (p/generate b [])
 (m/generate @(:a b) {})
 

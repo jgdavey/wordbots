@@ -5,18 +5,15 @@
             [wordbots.protocols :as p]
             [wordbots.util :refer [lines paragraphs]]))
 
- ;; The smaller the number, the more nonsensical
-(def tuple-size 2)
-
 (defn init-texts [index]
   (with-open [rdr (io/reader (io/resource "plotbot/plots.txt") :encoding "ISO-8859-1")]
-    (doseq [e (line-seq rdr)]
+    (doseq [line (line-seq rdr)]
       (when (= 1 (rand-int 2)) ; coinflip
-        (swap! index m/index e tuple-size))))
+        (swap! index m/index line))))
   (with-open [rdr (io/reader (io/resource "erowid.txt"))]
-    (doseq [e (line-seq rdr)]
+    (doseq [line (line-seq rdr)]
       (when (= 1 (rand-int 12))
-        (swap! index m/index e tuple-size)))))
+        (swap! index m/index line)))))
 
 (defn generate* [index]
   (m/generate @index {:target-length 45, :timeout-ms 100}))
@@ -29,7 +26,7 @@
     (generate* a)))
 
 (defn bot []
-  (->Markovbot (atom {})))
+  (->Markovbot (atom (m/markov-index-factory 2))))
 
 (comment
 
