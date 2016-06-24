@@ -4,7 +4,7 @@
             [clojure.data.generators :as gen]
             [wordbots.markov :as m]
             [wordbots.protocols :as p]
-            [wordbots.util :refer [lines paragraphs]]))
+            [wordbots.util :refer [lines paragraphs presence]]))
 
 (defn init-texts [index]
   (with-open [rdr (io/reader (io/resource "plotbot/plots.txt") :encoding "ISO-8859-1")]
@@ -15,10 +15,6 @@
     (doseq [line (line-seq rdr)]
       (when (= 1 (rand-int 12))
         (swap! index m/index line)))))
-
-(defn presence [thing]
-  (when (seq thing)
-    thing))
 
 (defn parse-query [{:strs [text trigger_word]}]
   (let [pattern (re-pattern (str "^" (or trigger_word "plot(bot)?:?") " *"))]

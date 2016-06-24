@@ -6,3 +6,7 @@
 
 (defn paragraphs [text]
   (str/split text #"\n\n"))
+
+(defn presence [thing]
+  (when (seq thing)
+    thing))

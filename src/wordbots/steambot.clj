@@ -3,7 +3,8 @@
             [clojure.data.generators :as gen]
             [clojure.java.io :as io]
             [wordbots.markov :as m]
-            [wordbots.protocols :as p])
+            [wordbots.protocols :as p]
+            [wordbots.util :refer [presence]])
   (:import [java.io InputStreamReader]))
 
 (def texts ["aristotle.txt"
@@ -31,20 +32,26 @@
                     (butlast sentences)
                     sentences))))
 
+(defn parse-query [{:strs [text trigger_word]}]
+  (let [pattern (re-pattern (str "^" (or trigger_word "steam(bot)?:?") " *"))]
+    (some-> text
+            (str/replace pattern "")
+            presence)))
+
 (defn generate*
   "Using index idx, generate a sentence"
-  [idx]
+  [idx params]
   (sentences-from
-    (m/tuples->sentence
-      (m/generate-forward idx (-> idx :forward-index keys rand-nth)))))
+    (m/generate-1 idx {:seed (or (parse-query params)
+                                 (-> idx :entries keys rand-nth))})))
 
 (defrecord Markovbot [a texts]
   p/Bot
   (init [_]
     (doseq [text texts]
       (index-resource a text)))
-  (generate [_ _]
-    (generate* @a)))
+  (generate [_ params]
+    (generate* @a params)))
 
 (defn bot []
   (->Markovbot (atom (m/markov-index-factory 2))
@@ -54,6 +61,6 @@
 
 (def b (bot))
 (p/init b)
-(p/generate b [])
+(p/generate b {"text" "love"})
 
 )
