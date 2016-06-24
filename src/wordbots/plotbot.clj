@@ -1,5 +1,6 @@
 (ns wordbots.plotbot
   (:require [clojure.java.io :as io]
+            [clojure.string :as str]
             [clojure.data.generators :as gen]
             [wordbots.markov :as m]
             [wordbots.protocols :as p]
@@ -15,15 +16,27 @@
       (when (= 1 (rand-int 12))
         (swap! index m/index line)))))
 
-(defn generate* [index]
-  (m/generate @index {:target-length 45, :timeout-ms 100}))
+(defn presence [thing]
+  (when (seq thing)
+    thing))
+
+(defn parse-query [{:strs [text trigger_word]}]
+  (let [pattern (re-pattern (str "^" (or trigger_word "plot(bot)?:?") " *"))]
+    (some-> text
+            (str/replace pattern "")
+            presence)))
+
+(defn generate* [index params]
+  (m/generate @index {:target-length 45
+                      :timeout-ms 100
+                      :seed (parse-query params)}))
 
 (defrecord Markovbot [a]
   p/Bot
   (init [_]
     (init-texts a))
-  (generate [_ _]
-    (generate* a)))
+  (generate [_ params]
+    (generate* a params)))
 
 (defn bot []
   (->Markovbot (atom (m/markov-index-factory 2))))

@@ -8,6 +8,7 @@
             [wordbots.memebot :as memebot]
             [wordbots.plotbot :as plotbot]
             [ring.middleware.json :refer [wrap-json-response]]
+            [ring.middleware.params :refer [wrap-params]]
             [ring.adapter.jetty :refer [run-jetty]]
             [clojure.tools.logging :as log]
             [clout.core :as clout]
@@ -64,12 +65,13 @@
 
 (defn generate [req]
   (if-let [bot (find-bot req)]
-    (response (p/generate bot req))
+    (response (p/generate bot (:params req)))
     (or (r/file-response (:uri req) {:root image-root})
         (r/not-found "No bot"))))
 
 (def app
   (-> generate
+      wrap-params
       wrap-response
       wrap-json-response))
 
