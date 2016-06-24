@@ -49,9 +49,11 @@
     (persistent! (reduce index-path (transient m) pairs))))
 
 (defn index
-  "Index String data into index MarkovIndex idx, using tuples of size tuple-size"
+  "Index String data into index MarkovIndex idx, optionally using tokenizer"
   ([idx ^String data]
-   (let [tokens (words data)
+   (index idx data words))
+  ([idx ^String data tokenizer]
+   (let [tokens (tokenizer data)
          forward (index-tokens (:forward-index idx) (:tuple-size idx) tokens)
          backward (index-tokens (:backward-index idx) (:tuple-size idx) (reverse tokens))
          entries (index-entries (:entries idx) (:tuple-size idx) tokens)]
