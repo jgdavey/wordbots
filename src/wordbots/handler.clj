@@ -13,13 +13,14 @@
             [clojure.tools.logging :as log]
             [clout.core :as clout]
             [compojure.core :refer [defroutes GET POST]]
-            [ring.util.response :as r :refer [response]]))
+            [ring.util.response :as r :refer [response]]
+            [clojure.string :as str]))
 
 (def image-root "/tmp/images")
 (.mkdirs (java.io.File. image-root))
 
 (def bots
-  {(steambot/bot)   ["/" "/steam" "/steambot"]
+  {(steambot/bot)   ["/steam" "/steambot"]
    (madbot/bot)     ["/madbot" "/wisdom"]
    (startupbot/bot) ["/startup" "/startupbot"]
    (fightbot/bot)   ["/fight" "/fightbot"]
@@ -64,10 +65,12 @@
         (html-response resp)))))
 
 (defn generate [req]
-  (if-let [bot (find-bot req)]
-    (response (p/generate bot (:params req)))
-    (or (r/file-response (:uri req) {:root image-root})
-        (r/not-found "No bot"))))
+  (if (= "/" (:uri req))
+    (response (str "Bots: " (str/join ", " (->> bots vals (map first)))))
+    (if-let [bot (find-bot req)]
+      (response (p/generate bot req))
+      (or (r/file-response (:uri req) {:root image-root})
+          (r/not-found "No bot")))))
 
 (def app
   (-> generate
@@ -83,7 +86,8 @@
 (comment
 
 (init)
-(def server (run-jetty #'app {:port 4000 :join? false}))
-(.stop server)
+(def ^:once server (atom nil))
+(reset! server (run-jetty #'app {:port 4000 :join? false}))
+(.stop @server)
 
 )
