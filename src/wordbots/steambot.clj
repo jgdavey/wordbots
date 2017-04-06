@@ -50,8 +50,8 @@
   (init [_]
     (doseq [text texts]
       (index-resource a text)))
-  (generate [_ params]
-    (generate* @a params)))
+  (generate [_ req]
+    (generate* @a (:params req))))
 
 (defn bot []
   (->Markovbot (atom (m/markov-index-factory 2))

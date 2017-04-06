@@ -31,8 +31,8 @@
   p/Bot
   (init [_]
     (init-texts a))
-  (generate [_ params]
-    (generate* a params)))
+  (generate [_ req]
+    (generate* a (:params req))))
 
 (defn bot []
   (->Markovbot (atom (m/markov-index-factory 2))))
