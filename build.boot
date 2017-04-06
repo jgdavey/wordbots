@@ -1,20 +1,20 @@
 (set-env!
-  :source-paths #{"src"}
-  :resource-paths #{"resources"}
-  :dependencies '[[org.clojure/clojure "1.8.0"]
-                  [org.clojure/data.generators "0.1.2"]
-                  [org.clojure/core.async "0.2.374"]
-                  [org.clojure/tools.logging "0.3.1"]
-                  [org.slf4j/slf4j-simple "1.7.21"]
-                  [com.joshuadavey/vecset "0.2.0"]
-                  [compojure "1.5.0"]
-                  [instaparse "1.4.2" :exclusions [org.clojure/clojure]]
-                  [image-resizer  "0.1.9"]
-                  [clj-http "2.1.0"]
-                  [clj-tuple "0.2.2"]
-                  [ring/ring-jetty-adapter "1.4.0"]
-                  [ring/ring-json "0.4.0"]
-                  [deraen/boot-ctn "0.1.0" :scope "test"]])
+ :source-paths #{"src"}
+ :resource-paths #{"resources"}
+ :dependencies '[[org.clojure/clojure "1.9.0-alpha15"]
+                 [clj-http "3.4.1"]
+                 [clj-tuple "0.2.2"]
+                 [com.joshuadavey/vecset "0.2.0"]
+                 [compojure "1.6.0-beta3"]
+                 [image-resizer "0.1.9"]
+                 [instaparse "1.4.5" :exclusions [org.clojure/clojure]]
+                 [org.clojure/core.async "0.3.442"]
+                 [org.clojure/tools.logging "0.3.1"]
+                 [org.slf4j/slf4j-simple "1.7.25"]
+                 [ring/ring-jetty-adapter "1.6.0-RC1"]
+                 [ring/ring-json "0.4.0"]
+                 [org.clojure/data.generators "0.1.2"]
+                 [deraen/boot-ctn "0.1.0" :scope "test"]])
 
 (require 'deraen.boot-ctn)
 (deraen.boot-ctn/init-ctn!)
