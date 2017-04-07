@@ -12,7 +12,6 @@
   (toString [_] word))
 
 (def index (atom {:adjective nil}))
-(def proverbs (atom []))
 
 (def mappings
   {:adjective  "madbot/adjectives.txt"
@@ -50,27 +49,35 @@
       (recur (map possibly-replace tokens) (dec i))
       (str/join t))))
 
+(defn lines-from-resource [filename]
+  (->> (io/resource filename) slurp lines))
+
 (defn init* []
-  (let [words #(->> (io/resource %) slurp lines)]
-    (doseq [[part file] mappings]
-      (let [w (words file)]
-        (swap! index assoc part (vecset w)))))
-  (let [proverb-texts (->> (io/resource "madbot/proverbs.txt") slurp lines)]
-    (reset! proverbs (mapv index-text proverb-texts))))
+  (doseq [[part file] mappings]
+    (let [w (lines-from-resource file)]
+      (swap! index assoc part (vecset w)))))
 
-(defn generate* []
-  (madlib (rand-nth @proverbs)))
+(defn generate* [proverbs]
+  (madlib (index-text (rand-nth proverbs))))
 
-(defrecord Madbot []
+(defrecord Madbot [proverbs]
   p/Bot
   (init [_] (init*))
-  (generate [_ req] (generate*)))
-(def mb (->Madbot))
-(def bot (constantly mb))
+  (generate [_ req] (generate* proverbs)))
+
+(defn bot []
+  (->Madbot
+   (lines-from-resource "madbot/proverbs.txt")))
 
 (comment
 
-(p/init mb)
-(p/generate mb {})
+  (def mb (->Madbot ["The apple doesn't fall far from the tree."]))
+  (def mb (bot))
+  (p/init mb)
+  (p/generate mb {})
 
-)
+  (init*)
+  (generate* ["Nothing is certain but death and taxes."
+              "Rome wasn't built in a day."])
+
+  )
