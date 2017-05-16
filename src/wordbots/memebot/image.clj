@@ -91,7 +91,7 @@
   (let [g (.getGraphics image)]
     (.setRenderingHint g
                        java.awt.RenderingHints/KEY_TEXT_ANTIALIASING
-                       java.awt.RenderingHints/VALUE_TEXT_ANTIALIAS_LCD_HRGB)
+                       java.awt.RenderingHints/VALUE_TEXT_ANTIALIAS_GASP)
     (when top-caption (draw-string-centered g top-caption image true))
     (when bottom-caption (draw-string-centered g bottom-caption image false))
     image))
