@@ -30,7 +30,7 @@
           (swap! index m/index line))))
     (with-open [rdr (io/reader (io/resource "erowid.txt"))]
       (doseq [line (line-seq rdr)]
-        (when (= 0 (rand-int (* 4 factor)))
+        (when (= 0 (rand-int (* 20 factor))) ; very infrequent
           (swap! index m/index line))))))
 
 (defn parse-query [{:strs [text trigger_word]}]
