@@ -56,8 +56,18 @@
 
 (comment
 
-(def b (bot))
-(p/init b)
-(p/generate b nil)
-(-> b :a deref :forward-index count)
+  (def b (bot))
+  (p/init b)
+  (p/generate b nil)
+  (-> b :a deref :forward-index count)
+
+
+  (let [n 50
+        tweetable (->> (repeatedly n #(p/generate b nil))
+                       (filter #(> 140 (count %))))]
+    (with-open [w (io/writer "best.txt")]
+      (doseq [tweet tweetable]
+        (.write w tweet)
+        (.newLine w))))
+
 )
