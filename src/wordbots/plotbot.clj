@@ -6,15 +6,32 @@
             [wordbots.protocols :as p]
             [wordbots.util :refer [lines paragraphs presence]]))
 
+;; The following fn approximates this:
+;; 200M 16
+;; 400M 8
+;; 800M 4
+;; 1600M 2
+;; 3200M 1
+(defn curve [x]
+  (/ 3200000000 x))
+
+(defn clamp [lower n upper]
+  (min upper (max lower n)))
+
+(defn mem-factor []
+  (let [x (.maxMemory (Runtime/getRuntime))]
+    (int (clamp 1 (curve x) 32))))
+
 (defn init-texts [index]
-  (with-open [rdr (io/reader (io/resource "plotbot/plots.txt") :encoding "ISO-8859-1")]
-    (doseq [line (line-seq rdr)]
-      (when (= 1 (rand-int 2)) ; coinflip
-        (swap! index m/index line))))
-  (with-open [rdr (io/reader (io/resource "erowid.txt"))]
-    (doseq [line (line-seq rdr)]
-      (when (= 1 (rand-int 12))
-        (swap! index m/index line)))))
+  (let [factor (mem-factor)]
+    (with-open [rdr (io/reader (io/resource "plotbot/plots.txt") :encoding "ISO-8859-1")]
+      (doseq [line (line-seq rdr)]
+        (when (= 0 (rand-int factor)) ; coinflip
+          (swap! index m/index line))))
+    (with-open [rdr (io/reader (io/resource "erowid.txt"))]
+      (doseq [line (line-seq rdr)]
+        (when (= 0 (rand-int (* 4 factor)))
+          (swap! index m/index line))))))
 
 (defn parse-query [{:strs [text trigger_word]}]
   (let [pattern (re-pattern (str "^" (or trigger_word "plot(bot)?:?") " *"))]
@@ -42,5 +59,5 @@
 (def b (bot))
 (p/init b)
 (p/generate b nil)
-
+(-> b :a deref :forward-index count)
 )
