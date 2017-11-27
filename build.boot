@@ -1,21 +1,20 @@
 (set-env!
  :source-paths #{"src"}
  :resource-paths #{"resources"}
- :dependencies '[[org.clojure/clojure "1.9.0-alpha16"]
-                 [org.clojure/spec.alpha "0.1.123"]
-                 [clj-http "3.6.1"]
+ :dependencies '[[org.clojure/clojure "1.9.0-alpha16" :scope "provided"]
+                 [clj-http "3.7.0"]
                  [clj-tuple "0.2.2"]
                  [com.joshuadavey/vecset "0.2.0"]
                  [compojure "1.6.0" :exclusions [ring/* instaparse]]
-                 [ring/ring-core "1.6.2"]
+                 [ring/ring-core "1.6.3"]
                  [image-resizer "0.1.10"]
-                 [instaparse "1.4.7" :exclusions [org.clojure/clojure]]
-                 [org.clojure/core.async "0.3.443"]
+                 [instaparse "1.4.8" :exclusions [org.clojure/clojure]]
+                 [org.clojure/core.async "0.3.465"]
                  [org.clojure/tools.logging "0.4.0"]
-                 [org.slf4j/slf4j-simple "1.7.25"]
-                 [ring/ring-jetty-adapter "1.6.2"]
+                 [org.slf4j/slf4j-simple "1.7.6"]
+                 [ring/ring-jetty-adapter "1.6.3"]
                  [ring/ring-json "0.4.0" :exclusions [ring/* cheshire]]
-                 [cheshire "5.7.1"]
+                 [cheshire "5.8.0"]
                  [org.clojure/data.generators "0.1.2"]
                  [deraen/boot-ctn "0.1.0" :scope "test"]])
 
@@ -34,7 +33,7 @@
                    #"(?i)^META-INF/LICENSE$"
                    #"(?i)^LICENSE$"}})
 
-(deftask build []
+(deftask package []
   (comp
     (aot :all true)
     (uber)
