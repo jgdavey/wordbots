@@ -1,7 +1,7 @@
 (set-env!
  :source-paths #{"src"}
  :resource-paths #{"resources"}
- :dependencies '[[org.clojure/clojure "1.9.0-alpha17"]
+ :dependencies '[[org.clojure/clojure "1.9.0-alpha16"]
                  [org.clojure/spec.alpha "0.1.123"]
                  [clj-http "3.6.1"]
                  [clj-tuple "0.2.2"]
