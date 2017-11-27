@@ -42,7 +42,7 @@
 
 (defn generate* [index params]
   (log/info "Generating plot" params)
-  (m/generate @index {:target-length 45
+  (m/generate @index {:target-length 38
                       :timeout-ms 100
                       :seed (parse-query params)}))
 
