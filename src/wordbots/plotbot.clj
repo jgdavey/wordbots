@@ -2,6 +2,7 @@
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
             [clojure.data.generators :as gen]
+            [clojure.tools.logging :as log]
             [wordbots.markov :as m]
             [wordbots.protocols :as p]
             [wordbots.util :refer [lines paragraphs presence]]))
@@ -40,6 +41,7 @@
             presence)))
 
 (defn generate* [index params]
+  (log/info "Generating plot" params)
   (m/generate @index {:target-length 45
                       :timeout-ms 100
                       :seed (parse-query params)}))

@@ -20,24 +20,36 @@
 (.mkdirs (java.io.File. image-root))
 
 (def bots
-  {(steambot/bot)   ["/steam" "/steambot"]
-   (madbot/bot)     ["/madbot" "/wisdom"]
-   (startupbot/bot) ["/startup" "/startupbot"]
-   (fightbot/bot)   ["/fight" "/fightbot"]
-   (memebot/startup-image-bot image-root) ["/startup-image" "/killer-idea"]
-   (plotbot/bot) ["/plot" "/movie-idea"]
-   })
+  [{:id :steambot
+    :bot (steambot/bot)
+    :paths ["/steam" "/steambot"]}
+   {:id :madbot
+    :bot (madbot/bot)
+    :paths ["/madbot" "/wisdom"]}
+   {:id :startupbot
+    :bot (startupbot/bot)
+    :paths["/startup" "/startupbot"]}
+   {:id :fightbot
+    :bot (fightbot/bot)
+    :paths ["/fight" "/fightbot"]}
+   {:id :memebot
+    :bot (memebot/startup-image-bot image-root)
+    :paths ["/startup-image" "/killer-idea"]}
+   {:id :plotbot
+    :bot (plotbot/bot)
+    :paths ["/plot" "/movie-idea"]}])
 
 (def ^:private routes
-  (reduce-kv (fn [all bot paths]
+  (reduce (fn [all {:keys [bot paths]}]
             (into all (map vector
                          (map clout/route-compile paths)
                          (repeat bot))))
           [] bots))
 
 (defn init []
-  (doseq [bot (keys bots)]
-    (p/init bot)))
+  (doseq [bot bots]
+    (log/info "Initializing" (:id bot))
+    (p/init (:bot bot))))
 
 (defn- find-bot [req]
   (some (fn [[route bot]]
@@ -66,7 +78,7 @@
 
 (defn generate [req]
   (if (= "/" (:uri req))
-    (response (str "Bots: " (str/join ", " (->> bots vals (map first)))))
+    (response (str "Bots: " (str/join ", " (->> bots (map (comp first :paths))))))
     (if-let [bot (find-bot req)]
       (response (p/generate bot req))
       (or (r/file-response (:uri req) {:root image-root})
