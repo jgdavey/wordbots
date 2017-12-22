@@ -1,12 +1,13 @@
 (ns wordbots.util
   (:require [clojure.string :as str]))
 
-(defn lines [text]
-  (str/split text #"\n"))
+(def lines str/split-lines)
 
-(defn paragraphs [text]
-  (str/split text #"\n\n"))
+(def presence not-empty)
 
-(defn presence [thing]
-  (when (seq thing)
-    thing))
+(defn clean-word "return only chars"
+  [^String s]
+  (str/replace s #"[^a-zA-Z-]" ""))
+
+(defn paragraphs [^String text]
+  (str/split text #"\r?\n\r?\n"))
