@@ -7,6 +7,7 @@
             [wordbots.startupbot :as startupbot]
             [wordbots.memebot :as memebot]
             [wordbots.plotbot :as plotbot]
+            [wordbots.rhymebot :as rhymebot]
             [ring.middleware.json :refer [wrap-json-response]]
             [ring.middleware.params :refer [wrap-params]]
             [ring.adapter.jetty :refer [run-jetty]]
@@ -37,7 +38,10 @@
     :paths ["/startup-image" "/killer-idea"]}
    {:id :plotbot
     :bot (plotbot/bot)
-    :paths ["/plot" "/movie-idea"]}])
+    :paths ["/plot" "/movie-idea"]}
+   {:id :rhymebot
+    :bot (rhymebot/bot)
+    :paths ["/twas-the-night-before-christmas"]}])
 
 (def ^:private routes
   (reduce (fn [all {:keys [bot paths]}]
