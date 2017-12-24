@@ -94,16 +94,17 @@
       wrap-response
       wrap-json-response))
 
-(defn -main []
+(defn start-server [jetty-opts]
+  (log/info "Initializing bots...")
   (init)
-  (log/info "Starting jetty on port 4000")
-  (run-jetty #'app {:port 4000}))
+  (log/info "Starting jetty on port " (:port jetty-opts))
+  (run-jetty #'app jetty-opts))
+
+(defn -main []
+  (start-server {:port 4000}))
 
 (comment
-
-(init)
-(def ^:once server (atom nil))
-(reset! server (run-jetty #'app {:port 4000 :join? false}))
-(.stop @server)
-
-)
+  (def ^:once server (atom nil))
+  (reset! server (start-server {:port 4000 :join? false}))
+  (.stop @server)
+  )
