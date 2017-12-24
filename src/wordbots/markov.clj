@@ -5,8 +5,6 @@
             [clj-tuple :as tuple :refer [tuple]]
             [clojure.java.io :as io]))
 
-(def increment (fnil inc 0))
-
 (defrecord MarkovIndex [tuple-size forward-index backward-index entries])
 
 (defn markov-index-factory
@@ -18,6 +16,11 @@
    (if ks
      (assoc! m k (apply update-in (get m k) ks f args))
      (assoc! m k (apply f (get m k) args))))
+
+(defn increment [num]
+  (if (nil? num)
+    1
+    (inc ^long num)))
 
 (defn- index-path
   "Given a map and pair, updates the \"path\" to
