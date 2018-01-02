@@ -3,7 +3,6 @@
  :resource-paths #{"resources"}
  :dependencies '[[org.clojure/clojure "1.9.0-alpha16" :scope "provided"]
                  [clj-http "3.7.0"]
-                 [clj-tuple "0.2.2"]
                  [com.joshuadavey/vecset "0.2.0"]
                  [compojure "1.6.0" :exclusions [ring/* instaparse]]
                  [ring/ring-core "1.6.3"]

@@ -2,8 +2,9 @@
   (:require [clojure.string :as str]
             [clojure.core.async :as async :refer [chan <! >! go timeout close!]]
             [clojure.data.generators :as gen]
-            [clj-tuple :as tuple :refer [tuple]]
             [clojure.java.io :as io]))
+
+(def tuple-vector vector)
 
 (defrecord MarkovIndex [tuple-size forward-index backward-index entries])
 
@@ -35,7 +36,7 @@
   (concat (repeat n ::boundary) tokens [::boundary]))
 
 (defn prefix-pair [coll]
-  (conj [(apply tuple/vector (butlast coll))] (last coll)))
+  (conj [(apply tuple-vector (butlast coll))] (last coll)))
 
 (defn tokens->prefix-pairs [tuple-size tokens]
   (->> tokens
@@ -48,7 +49,7 @@
     (persistent! (reduce index-path (transient m) pairs))))
 
 (defn index-entries [m tuple-size tokens]
-  (let [pairs (mapv (juxt first (partial apply tuple/vector)) (partition tuple-size 1 tokens))]
+  (let [pairs (mapv (juxt first (partial apply tuple-vector)) (partition tuple-size 1 tokens))]
     (persistent! (reduce index-path (transient m) pairs))))
 
 (defn index
@@ -88,7 +89,7 @@
   Stops at a ::boundary, or after max tuples, whatever comes first."
   [m t k max-words]
   (loop [acc (if (coll? k) k [k])]
-    (let [token (apply tuple/vector (subvec acc (max (- (count acc) t) 0)))
+    (let [token (apply tuple-vector (subvec acc (max (- (count acc) t) 0)))
           d (get m token)
           nextword (when (pos? (count d))
                      (gen/weighted d))]
@@ -99,13 +100,13 @@
 (defn generate-forward [idx start-at]
   (let [{:keys [tuple-size forward-index]} idx
         start (or start-at
-                  (apply tuple/vector (repeat tuple-size ::boundary)))]
+                  (apply tuple-vector (repeat tuple-size ::boundary)))]
     (generate-sequence (:forward-index idx) (:tuple-size idx) start 100)))
 
 (defn generate-with-seed [idx seed]
   (when-let [starts (get-in idx [:entries seed])]
     (let [start (gen/weighted starts)
-          front-half (generate-sequence (:backward-index idx) (:tuple-size idx) (apply tuple/vector (reverse start)) 50)
+          front-half (generate-sequence (:backward-index idx) (:tuple-size idx) (apply tuple-vector (reverse start)) 50)
           back-half (generate-sequence (:forward-index idx) (:tuple-size idx) start 50)]
       (concat (reverse (drop (:tuple-size idx) front-half)) back-half))))
 
