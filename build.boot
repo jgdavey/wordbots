@@ -14,6 +14,7 @@
                  [ring/ring-jetty-adapter "1.6.3"]
                  [ring/ring-json "0.4.0" :exclusions [ring/* cheshire]]
                  [cheshire "5.8.0"]
+                 [com.clojure-goes-fast/clj-memory-meter "0.1.0"]
                  [org.clojure/data.generators "0.1.2"]
                  [deraen/boot-ctn "0.1.0" :scope "test"]])
 
