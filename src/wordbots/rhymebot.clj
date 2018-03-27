@@ -1,6 +1,7 @@
 (ns wordbots.rhymebot
   (:require [clojure.string :as str]
             [clojure.java.io :as io]
+            [wordbots.wordnet :as wordnet]
             [wordbots.protocols :as p]
             [wordbots.util :refer [clean-word lines]]))
 
@@ -60,30 +61,31 @@
 (defn deepest-rhymes*
   [word xform]
   (when-let [entry (word-to-rhyme word)]
-    (let [max-phonemes (max (dec (count entry)) 2)]
+    (let [max-phonemes (max (dec (count entry)) 3)]
       (->> (range max-phonemes 1 -1)
            (map (fn [i]
                   (->> (take i entry)
                        (get-in rhyme-to-word)
                        get-deepest-values
-                       (into [] xform))))
+                       (into [] (comp (remove #{word})
+                                      xform)))))
            (filter not-empty)
            first))))
 
 (defn deepest-rhymes
   [word]
   (deepest-rhymes* word (comp
-                         (remove #{word})
                          (at-least 2))))
 
-(defn deepest-rhymes-same-length
+(defn deepest-rhymes-similar-length
   [word]
-  (deepest-rhymes* word (comp
-                         (remove #{word})
-                         (filter
-                          (fn [candidate]
-                            (= (count (word-to-rhyme word))
-                               (count (word-to-rhyme candidate))))))))
+  (let [len (count (word-to-rhyme word))]
+    (deepest-rhymes* word
+                     (filter
+                      (fn [candidate]
+                        (< (Math/abs (- len
+                                        (count (word-to-rhyme candidate))))
+                           2))))))
 
 (def placeholder-pattern #"\{\{(.*?)\}\}")
 
@@ -101,6 +103,36 @@
                    (rand-nth rhymes)
                    word))))
 
+(defn random-rhymable-word
+  ([valid?]
+   (let [word (rand-nth (keys word-to-rhyme))]
+     (if (valid? word)
+       word
+       (recur valid?))))
+  ([part-of-speech valid?]
+   (loop []
+     (let [word (first (wordnet/random-words 1 part-of-speech))]
+       (if (valid? word)
+         word
+         (recur))))))
+
+(def has-similar-length-rhymes? #(seq (deepest-rhymes-similar-length %)))
+
+(defn rhyme-abab [text]
+  (let [matched (atom -1)
+        make-pair #(let [w1 (random-rhymable-word ::wordnet/adjective has-similar-length-rhymes?)
+                         w2 (random-rhymable-word ::wordnet/adjective has-similar-length-rhymes?)]
+                     [w1
+                      w2
+                      (rand-nth (deepest-rhymes-similar-length w1))
+                      (rand-nth (deepest-rhymes-similar-length w2))])
+        rhyme-seq (mapcat identity (repeatedly make-pair))]
+    (str/replace text placeholder-pattern
+                 (fn [_]
+                   (swap! matched inc)
+                   (nth rhyme-seq @matched)))))
+
+
 (defrecord Rhymebot [text]
   p/Bot
   (init [_])
@@ -113,4 +145,7 @@
                   add-placeholders)))
 
 (comment
-  (p/generate (bot) {}))
+  (rhyme-abab
+   (add-placeholders
+    "Roses are red\nViolets are blue\nSugar is sweet\nAnd you are too"))
+  )
