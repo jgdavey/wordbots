@@ -3,23 +3,20 @@
             [clojure.java.io :as io]
             [wordbots.wordnet :as wordnet]
             [wordbots.protocols :as p]
-            [wordbots.util :refer [clean-word lines]]))
+            [wordbots.util :refer [clean-word lines map-entry]]))
 
-(defn read-words-lines
-  [readable]
+(defn read-to-word-rhymes [readable]
   (with-open [rdr (io/reader readable)]
-    (doall
-     (for [^String line (line-seq rdr)
-           :when (not (str/starts-with? line ";;;"))]
-       (str/split line #"\s+")))))
+    (into {}
+          (comp (remove #(str/starts-with? % ";;;"))
+                (map #(str/split % #"\s+"))
+                (map (fn [[word & rhyme]]
+                       (map-entry
+                        (clean-word (str/lower-case word))
+                        (mapv keyword (reverse rhyme))))))
+          (line-seq rdr))))
 
-(def word-to-rhyme
-  (reduce (fn [m [word & rhyme]]
-            (assoc m
-                   (clean-word (str/lower-case word))
-              (mapv keyword (reverse rhyme))))
-          {}
-          (read-words-lines (io/resource "cmudict.txt"))))
+(def word-to-rhyme (read-to-word-rhymes (io/resource "cmudict.txt")))
 
 (def rhyme-to-word
   (reduce
@@ -99,38 +96,51 @@
 (defn re-rhyme [text]
   (str/replace text placeholder-pattern
                (fn [[_ word]]
-                 (if-let [rhymes (seq (deepest-rhymes word))]
-                   (rand-nth rhymes)
-                   word))))
+                 (let [pos (wordnet/word->part-of-speech word)
+                       all-rhymes (seq (deepest-rhymes word))
+                       rhymes (filter #(= pos (wordnet/word->part-of-speech %)) all-rhymes)]
+                   (if (seq rhymes)
+                     (rand-nth rhymes)
+                     word)))))
 
-(defn random-rhymable-word
-  ([valid?]
-   (let [word (rand-nth (keys word-to-rhyme))]
-     (if (valid? word)
-       word
-       (recur valid?))))
-  ([part-of-speech valid?]
-   (loop []
-     (let [word (first (wordnet/random-words 1 part-of-speech))]
-       (if (valid? word)
-         word
-         (recur))))))
+(defn random-rhymable-words [gen rhymes min]
+  (loop []
+    (let [word (gen)
+          words (shuffle (cons word (rhymes word)))]
+      (if (>= (count words) min)
+        words
+        (recur)))))
 
-(def has-similar-length-rhymes? #(seq (deepest-rhymes-similar-length %)))
 
-(defn rhyme-abab [text]
-  (let [matched (atom -1)
-        make-pair #(let [w1 (random-rhymable-word ::wordnet/adjective has-similar-length-rhymes?)
-                         w2 (random-rhymable-word ::wordnet/adjective has-similar-length-rhymes?)]
-                     [w1
-                      w2
-                      (rand-nth (deepest-rhymes-similar-length w1))
-                      (rand-nth (deepest-rhymes-similar-length w2))])
-        rhyme-seq (mapcat identity (repeatedly make-pair))]
-    (str/replace text placeholder-pattern
-                 (fn [_]
-                   (swap! matched inc)
-                   (nth rhyme-seq @matched)))))
+(defn pattern->positions [pattern]
+  (vals
+   (reduce (fn [acc [i c]]
+             (update acc c (fnil conj []) i))
+           {}
+           (map-indexed vector pattern))))
+
+(defn generate-rhymeset [pattern gen rhymes]
+  (->> pattern
+       pattern->positions
+       (mapcat (fn [indices]
+                 (map vector indices
+                      (random-rhymable-words gen rhymes (count indices)))))
+       (sort-by first)
+       (map last)))
+
+(defn gen-word [pos]
+  (first (wordnet/random-words 1 pos)))
+
+(defn rhyme-pattern [template pattern]
+  (let [gen-rhymes #(generate-rhymeset pattern
+                                       (partial gen-word ::wordnet/adjective)
+                                       deepest-rhymes-similar-length)
+        rhyme-seq (mapcat identity (repeatedly gen-rhymes))
+        placeholders (count (re-seq placeholder-pattern template))]
+    (reduce (fn [poem word]
+              (str/replace-first poem placeholder-pattern word))
+            template
+            (take placeholders rhyme-seq))))
 
 
 (defrecord Rhymebot [text]
@@ -145,7 +155,16 @@
                   add-placeholders)))
 
 (comment
-  (rhyme-abab
-   (add-placeholders
-    "Roses are red\nViolets are blue\nSugar is sweet\nAnd you are too"))
+  (time
+   (rhyme-pattern
+    (add-placeholders
+     "Roses are red\nViolets are blue\nSugar is sweet\nAnd you are too")
+    "ABAB"))
+
+
+  (time
+   (re-rhyme (-> (io/resource "rhymebot/ttnbc.txt")
+                  slurp
+                  add-placeholders)))
+
   )

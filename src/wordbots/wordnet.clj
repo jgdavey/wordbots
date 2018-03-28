@@ -1,6 +1,7 @@
 (ns wordbots.wordnet
   (:require [clojure.java.io :as io]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [wordbots.util :refer [map-entry]]))
 
 (def parts-of-speech
   {"n" ::noun
@@ -23,9 +24,6 @@
 
 (defn clean-word [word]
   (str/replace word #"_" " "))
-
-(defn map-entry [k v]
-  (clojure.lang.MapEntry/create k v))
 
 (defn parse-data-line [line]
   (when (re-find #"^\d{8}" line)

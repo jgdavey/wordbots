@@ -11,3 +11,6 @@
 
 (defn paragraphs [^String text]
   (str/split text #"\r?\n\r?\n"))
+
+(defn map-entry [k v]
+  (clojure.lang.MapEntry/create k v))
