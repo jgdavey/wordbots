@@ -147,7 +147,7 @@
             replacements)))
 
 (defn generate-with-options [opts]
-  (let [text (get opts :text "Roses are red\nViolets are blue\nSugar is sweet\nAnd you are too")
+  (let [text (get opts :poem "Roses are red\nViolets are blue\nSugar is sweet\nAnd you are too")
         pattern (get opts :pattern "ABAB")]
     (-> text
         add-placeholders
@@ -167,7 +167,7 @@
     (generate-with-options
      (set/rename-keys params
                       {"pattern" :pattern
-                       "text" :text}))))
+                       "poem" :poem}))))
 
 (defn twasbot []
   (->Rerhymebot (-> (io/resource "rhymebot/ttnbc.txt")
