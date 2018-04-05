@@ -1,9 +1,10 @@
 (ns wordbots.rhymebot
-  (:require [clojure.string :as str]
-            [clojure.java.io :as io]
-            [wordbots.wordnet :as wordnet]
+  (:require [clojure.java.io :as io]
+            [clojure.set :as set]
+            [clojure.string :as str]
             [wordbots.protocols :as p]
-            [wordbots.util :refer [clean-word lines map-entry]]))
+            [wordbots.util :refer [clean-word map-entry]]
+            [wordbots.wordnet :as wordnet]))
 
 (defn read-to-word-rhymes [readable]
   (with-open [rdr (io/reader readable)]
@@ -136,23 +137,45 @@
                                        (partial gen-word ::wordnet/adjective)
                                        deepest-rhymes-similar-length)
         rhyme-seq (mapcat identity (repeatedly gen-rhymes))
-        placeholders (count (re-seq placeholder-pattern template))]
-    (reduce (fn [poem word]
-              (str/replace-first poem placeholder-pattern word))
+        replacements (map vector
+                           (map first
+                                (re-seq placeholder-pattern template))
+                           rhyme-seq)]
+    (reduce (fn [poem [old new]]
+              (str/replace-first poem old new))
             template
-            (take placeholders rhyme-seq))))
+            replacements)))
+
+(defn generate-with-options [opts]
+  (let [text (get opts :text "Roses are red\nViolets are blue\nSugar is sweet\nAnd you are too")
+        pattern (get opts :pattern "ABAB")]
+    (-> text
+        add-placeholders
+        (rhyme-pattern pattern))))
 
 
-(defrecord Rhymebot [text]
+(defrecord Rerhymebot [text]
   p/Bot
   (init [_])
   (generate [_ _]
     (re-rhyme text)))
 
-(defn bot []
-  (->Rhymebot (-> (io/resource "rhymebot/ttnbc.txt")
+(defrecord Rhymebot []
+  p/Bot
+  (init [_])
+  (generate [_ {:keys [params]}]
+    (generate-with-options
+     (set/rename-keys params
+                      {"pattern" :pattern
+                       "text" :text}))))
+
+(defn twasbot []
+  (->Rerhymebot (-> (io/resource "rhymebot/ttnbc.txt")
                   slurp
                   add-placeholders)))
+
+(defn bot []
+  (->Rhymebot))
 
 (comment
   (time
@@ -161,10 +184,14 @@
      "Roses are red\nViolets are blue\nSugar is sweet\nAnd you are too")
     "ABAB"))
 
+  (java.net.URLEncoder/encode "Roses are red\nViolets are blue\nSugar is sweet\nAnd you are too" "UTF-8")
+
+  (generate-with-options {})
+
 
   (time
    (re-rhyme (-> (io/resource "rhymebot/ttnbc.txt")
-                  slurp
-                  add-placeholders)))
+                 slurp
+                 add-placeholders)))
 
   )

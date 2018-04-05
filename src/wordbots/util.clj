@@ -13,4 +13,5 @@
   (str/split text #"\r?\n\r?\n"))
 
 (defn map-entry [k v]
+  ^clojure.lang.MapEntry
   (clojure.lang.MapEntry/create k v))

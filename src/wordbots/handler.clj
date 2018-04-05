@@ -41,6 +41,9 @@
     :paths ["/plot" "/movie-idea"]}
    {:id :rhymebot
     :bot (rhymebot/bot)
+    :paths ["/rhyme"]}
+   {:id :twasbot
+    :bot (rhymebot/twasbot)
     :paths ["/twas-the-night-before-christmas"]}])
 
 (def ^:private routes
