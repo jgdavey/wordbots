@@ -67,7 +67,7 @@
 (def dict (make-dictionary))
 
 (defn word->part-of-speech [word]
-  (get-in dict [:words->pos word]))
+  (get-in dict [:word->pos word]))
 
 (defn random-words [n part-of-speech]
   (let [gen #(rand-nth (get-in dict [:pos->words part-of-speech]))]

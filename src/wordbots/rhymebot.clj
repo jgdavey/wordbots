@@ -59,8 +59,10 @@
 (defn deepest-rhymes*
   [word xform]
   (when-let [entry (word-to-rhyme word)]
-    (let [max-phonemes (max (dec (count entry)) 3)]
-      (->> (range max-phonemes 1 -1)
+    (let [phonemes (count entry)
+          max-phonemes (max (dec phonemes) 3)
+          min-phonemes (max (- max-phonemes 2) 1)]
+      (->> (range max-phonemes min-phonemes -1)
            (map (fn [i]
                   (->> (take i entry)
                        (get-in rhyme-to-word)
