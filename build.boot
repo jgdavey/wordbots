@@ -2,13 +2,13 @@
  :source-paths #{"src"}
  :resource-paths #{"resources"}
  :dependencies '[[org.clojure/clojure "1.9.0" :scope "provided"]
-                 [clj-http "3.7.0"]
+                 [clj-http "3.8.0"]
                  [com.joshuadavey/vecset "0.2.0"]
-                 [compojure "1.6.0" :exclusions [ring/* instaparse]]
+                 [compojure "1.6.1" :exclusions [ring/* instaparse]]
                  [ring/ring-core "1.6.3"]
                  [image-resizer "0.1.10"]
-                 [instaparse "1.4.8" :exclusions [org.clojure/clojure]]
-                 [org.clojure/core.async "0.3.465"]
+                 [instaparse "1.4.9" :exclusions [org.clojure/clojure]]
+                 [org.clojure/core.async "0.4.474"]
                  [org.clojure/tools.logging "0.4.0"]
                  [org.slf4j/slf4j-simple "1.7.6"]
                  [ring/ring-jetty-adapter "1.6.3"]
