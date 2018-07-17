@@ -63,6 +63,13 @@
   (p/generate b nil)
   (-> b :a deref :forward-index count)
 
+  (time
+   (m/tuples->sentence
+    (m/generate-sequence (-> b :a deref :forward-index)
+                         (-> b :a deref :tuple-size)
+                         [nil nil]
+                         20)))
+
 
   (let [n 50
         tweetable (->> (repeatedly n #(p/generate b nil))

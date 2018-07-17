@@ -3,6 +3,8 @@
  :resource-paths #{"resources"}
  :dependencies '[[org.clojure/clojure "1.9.0" :scope "provided"]
                  [clj-http "3.8.0"]
+                 [org.clojure/java.jdbc "0.7.7"]
+                 [org.postgresql/postgresql "42.2.4"]
                  [com.joshuadavey/vecset "0.2.0"]
                  [compojure "1.6.1" :exclusions [ring/* instaparse]]
                  [ring/ring-core "1.7.0-RC1"]
