@@ -12,10 +12,10 @@
 
 (derive ::sense ::adjective)
 
-(def mapping {::adjective "adj"
-              ::adverb "adv"
+(def mapping {::adverb "adv"
               ::noun "noun"
-              ::verb "verb"})
+              ::verb "verb"
+              ::adjective "adj"})
 
 (def files (reduce-kv (fn [m k v]
                         (assoc m k {:data (io/resource (str "dict/data." v))
@@ -36,24 +36,32 @@
             (map (fn [[word id]]
                    (map-entry
                     (clean-word word)
-                    pos)))
+                    #{pos})))
             word-pairs))))
 
 (defn parse-file-into [resource m]
   (with-open [f (io/reader resource)]
     (let [lines (line-seq f)]
-      (into m
-            (comp (keep parse-data-line)
-                  cat)
-            lines))))
+      (merge-with into m
+                  (into {}
+                        (comp (keep parse-data-line)
+                              cat)
+                        lines)))))
 
-(defn group-by-fn [keyfn coll f]
-  (persistent!
-   (reduce
-    (fn [ret x]
-      (let [k (keyfn x)]
-        (assoc! ret k (conj (get ret k []) (f x)))))
-    (transient {}) coll)))
+;; k - 1 word
+;; v - n pos
+;; v1 - 1 pos
+(defn invert-relation [m]
+  (with-meta
+    (persistent! (reduce-kv (fn [m k v]
+                              (reduce
+                               (fn [acc k1]
+                                 (if (contains? acc k1)
+                                   (assoc! acc k1 (conj (get acc k1) k))
+                                   (assoc! acc k1 [k]))) m v))
+                            (transient {})
+                            m))
+    (meta m)))
 
 (defn make-dictionary []
   (let [words
@@ -62,13 +70,27 @@
                 {}
                 files)]
     {:word->pos words
-     :pos->words (group-by-fn val words key)}))
+     :pos->words (invert-relation words)}))
 
 (def dict (make-dictionary))
 
-(defn word->part-of-speech [word]
+(defn word->parts-of-speech [word]
   (get-in dict [:word->pos word]))
 
 (defn random-words [n part-of-speech]
   (let [gen #(rand-nth (get-in dict [:pos->words part-of-speech]))]
     (take n (repeatedly gen))))
+
+
+(comment
+
+  (keys (:pos->words dict))
+
+  (random-words 10 ::sense)
+
+  (->> (:word->pos dict)
+       (filter (fn [e]
+                 (< 3 (count (val e)))))
+       (sort-by key))
+
+  )

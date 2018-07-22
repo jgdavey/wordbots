@@ -99,9 +99,9 @@
 (defn re-rhyme [text]
   (str/replace text placeholder-pattern
                (fn [[_ word]]
-                 (let [pos (wordnet/word->part-of-speech word)
+                 (let [pos (wordnet/word->parts-of-speech word)
                        all-rhymes (seq (deepest-rhymes word))
-                       rhymes (filter #(= pos (wordnet/word->part-of-speech %)) all-rhymes)]
+                       rhymes (filter #(= pos (wordnet/word->parts-of-speech %)) all-rhymes)]
                    (if (seq rhymes)
                      (rand-nth rhymes)
                      word)))))
