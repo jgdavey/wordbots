@@ -34,17 +34,18 @@
         (when (= 0 (rand-int (* 50 factor))) ; very infrequent
           (swap! index m/index line))))))
 
-(defn parse-query [{:strs [text trigger_word]}]
+(defn params->opts [{:strs [text trigger_word words] :as params}]
   (let [pattern (re-pattern (str "^" (or trigger_word "plot(bot)?:?") " *"))]
-    (some-> text
-            (str/replace pattern "")
-            presence)))
+    {:seed (some-> text
+                   (str/replace pattern "")
+                   presence)
+     :timeout-ms 80
+     :target-length (Integer/parseInt (or words "24"))}))
 
 (defn generate* [index params]
-  (log/info "Generating plot" params)
-  (m/generate @index {:target-length 38
-                      :timeout-ms 100
-                      :seed (parse-query params)}))
+  (let [opts (params->opts params)]
+    (log/info "Generating plot" opts)
+    (m/generate @index opts)))
 
 (defrecord Markovbot [a]
   p/Bot
@@ -57,19 +58,9 @@
   (->Markovbot (atom (m/markov-index-factory 2))))
 
 (comment
-
   (def b (bot))
   (p/init b)
   (p/generate b nil)
   (-> b :a deref :forward-index count)
-
-
-  (let [n 50
-        tweetable (->> (repeatedly n #(p/generate b nil))
-                       (filter #(> 140 (count %))))]
-    (with-open [w (io/writer "best.txt")]
-      (doseq [tweet tweetable]
-        (.write w tweet)
-        (.newLine w))))
 
 )

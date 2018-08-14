@@ -182,7 +182,12 @@
 
   (require '[criterium.core :as crit])
 
-  (def test-lines (vec (line-seq (io/reader (io/resource "test.txt")))))
+  (def test-lines (->> "test.txt"
+                       io/resource
+                       io/reader
+                       line-seq
+                       (take 1000)
+                       vec))
 
   ;; 951 ms
   (crit/bench
@@ -208,7 +213,7 @@
     (def nested-idx (atom (->MarkovIndex 2 {} {} {} (nested-encoder))))
     (def string-idx (atom (->MarkovIndex 2 {} {} {} (string-encoder ":"))))
     (with-open [rdr (io/reader (io/resource "plotbot/plots.txt"))]
-      (doseq [e (line-seq rdr)]
+      (doseq [e (take 1000 (line-seq rdr))]
         (swap! default-idx index e)
         (swap! nested-idx index e)
         (swap! string-idx index e)))
@@ -226,8 +231,5 @@
 
   ;; plots.txt
   ;; => {:default "392.0 MB", :nested "272.8 MB", :string "391.3 MB"}
-
-  ;; test.txt
-  ;; => {:default "41.8 MB", :nested "29.0 MB", :string "41.4 MB"}
 
   )
