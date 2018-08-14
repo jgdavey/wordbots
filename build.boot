@@ -16,7 +16,8 @@
                  [cheshire "5.8.0"]
                  [com.clojure-goes-fast/clj-memory-meter "0.1.0"]
                  [org.clojure/data.generators "0.1.2"]
-                 [deraen/boot-ctn "0.1.0" :scope "test"]])
+                 [deraen/boot-ctn "0.1.0" :scope "test"]
+                 [criterium "0.4.4"]])
 
 (require 'deraen.boot-ctn)
 (deraen.boot-ctn/init-ctn!)
