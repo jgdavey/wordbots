@@ -2,8 +2,17 @@
   (:require [instaparse.core :as insta :refer [defparser]]
             [clojure.string :as str]))
 
+;; Although technically correct, this grammar is a bit sluggish on a
+;; whole document (because of the character-wise negative lookahead in
+;; the word directive). Rather than apply the parser to a whole
+;; document, use the template-invert function to get the same
+;; structure at a cheaper price.
 (def grammar
   "
+  doc         := (tag | literal)*
+  literal     := wordish+
+  <wordish>   := (word | ws*)*
+  <word>      := #'((?!\\{\\{)[^\\s])*'
   tag         := <'{{'> <ws>* directive <ws>* <'}}'>
   <directive> := pos modifiers
   <pos>       := symbol
@@ -11,19 +20,19 @@
   modifier    := symbol (<':'> <ws>* args)?
   args        := arg (<ws>+ arg)*
   <arg>       := number | symbol | string | keyword
+  <identifier> := #'[a-zA-Z][a-zA-Z0-9-]*'
   number      := #'[1-9][0-9]*'
   string      := <'\"'> #'[^\"]*' <'\"'>
-  symbol      := #'[a-zA-Z][a-zA-Z0-9-]*'
-  keyword     := <':'> #'[a-zA-Z][a-zA-Z0-9-]*'
-  <ws>        := ' ' | '\n'
+  symbol      := identifier
+  keyword     := <':'> identifier
+  <ws>        := #'\\s+'
   ")
 
 (defparser parser grammar)
 
-(def tag-pattern #"\{\{[^\}\}]+?\}\}")
-
 (defn matches
-  "Returns a lazy sequence of successive matches, with start/end locations"
+  "Returns a lazy sequence of successive matches (a la re-groups), with
+  start/end locations"
   [re string]
   (let [m (re-matcher re string)]
     ((fn step []
@@ -32,6 +41,8 @@
                        :end (.end m)
                        :match (re-groups m)}
                (lazy-seq (step))))))))
+
+(def tag-pattern #"\{\{[^\}\}]+?\}\}")
 
 (defn invert-template [template]
   (let [tags (matches tag-pattern template)
@@ -56,18 +67,20 @@
     literals))
 
 (defn parse [template]
-  (map (fn [{:keys [type string tag]}]
-         (case type
-           :literal [:literal string]
-           :tag (insta/parse parser tag)))
-       (invert-template template)))
+  (into [:doc]
+        (map (fn [{:keys [type string tag]}]
+               (case type
+                 :literal [:literal string]
+                 :tag (insta/parse parser tag :start :tag)))
+             (invert-template template))))
 
 (defn transform* [parsed-template transform-map-overrides]
-  (insta/transform (merge {:symbol symbol
+  (insta/transform (merge {:doc str
+                           :symbol symbol
                            :string str
                            :keyword keyword
                            :number #(Long/parseLong %)
-                           :literal identity
+                           :literal str
                            :args vector
                            :modifier (fn [name & [args]]
                                        {:modifier/name name
@@ -79,5 +92,4 @@
   "Given a template and a tag-fn, return the resulting string. tag-fn is
   variadic function of the form (fn [tag & modifiers])"
   [template tag-fn]
-  (apply str
-         (transform* (parse template) {:tag tag-fn})))
+  (transform* (parse template) {:tag tag-fn}))
