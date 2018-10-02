@@ -1,0 +1,50 @@
+A {{ animal | default: "bird" }} in the {{ body-part | default: "hand" }} is worth {{ number | default: "two" }} in the bush.
+A {{ adjective | default: "broken" }} clock is {{ adjective | default: "right" }} twice a day.
+A chain is only as {{ adjective | default: "strong" }} as its weakest link.
+Absence makes the {{ body-part | default: "heart" }} {{ intransitive-action | default: "grow" }} {{ comparator | default: "fonder" }}.
+All {{ adjective | default: "good" }} things must come to an end.
+All is {{ adjective | default: "fair" }} in love and war.
+All work and no play makes Jack a {{ adjective | default: "dull" }} boy.
+A {{ body-part | default: "eye" }} for an {{ body-part | default: "eye" }} leaves the whole world {{ adjective | default: "blind" }}.
+Beauty is in the {{ body-part | default: "eye" }} of the beholder.
+Beauty is only {{ body-part | default: "skin" }}-deep.
+{{ animal | default: "Birds", plural, capitalize}} of a feather {{ intransitive-action | default: "flock" }} together.
+Curiosity killed the {{ animal | default: "cat" }}.
+Dare to be {{ adjective | default: "different" }}.
+Don't {{ transitive-action | default: "bet" }} the {{ animal | default: "cow" }} if you need the milk.
+Don't {{ transitive-action | default: "bite" }} the {{ body-part | default: "hand" }} that feeds you.
+Don't {{ transitive-action | default: "count" }} your {{ animal | default: "chickens", plural }} before they hatch.
+Don't {{ transitive-action | default: "cut" }} off your {{ body-part | default: "nose" }} to spite your {{ body-part | default: "face" }}.
+Don't {{ transitive-action | default: "shoot" }} the messenger.
+Don't {{ transitive-action | default: "put"}} the {{ object | default: "cart" }} before the {{ animal | default: "horse" }}.
+Early to bed and early to rise makes a man {{ adjective | default: "healthy" }}, {{ adjective | default: "wealthy" }} and {{ adjective | default: "wise" }}.
+Even a {{ animal | default: "fish" }} wouldn't get caught if he kept his {{ body-part | default: "mouth" }} shut.
+Every {{ animal | default: "bird" }} loves to hear himself {{ intransitive-action | default: "sing" }}.
+Fortune favors the {{ adjective | default: "bold" }}.
+If you can't {{ transitive-action | default: "beat" }} 'em, {{ transitive-action | default: "join"}} 'em.
+If you give a {{ animal | default: "mouse" }} a cookie, he's going to {{ intransitive-action | default: "ask"}} for a glass of milk.
+It's not over 'till the {{ adjective | default: "fat" }} lady {{ intransitive-action | plural, default:"sings" }}.
+Keep your friends {{ adjective | default: "close" }} and your enemies {{ comparator | default: "closer" }}.
+Keep your {{ body-part | default: "mouth" }} shut and your ears {{ adjective | default: "open" }}.
+Never look a gift {{ animal | default: "horse" }} in the {{ body-part | default: "mouth" }}.
+On the keyboard of life, always keep one {{ body-part | default: "finger" }} on the escape key.
+People who live in {{ adjective | default: "glass"}} houses should not {{ transitive-action | default: "throw" }} stones.
+{{ adjective | default: "Slow", capitalize }} and {{ adjective | default: "steady" }} wins the race.
+{{ adjective | default: "Sweet", capitalize }} things are {{ adjective | default: "bad" }} for the {{ body-part | default: "teeth" }}.
+The best things in life are {{ adjective | default: "free" }}.
+The best way to a man's {{ body-part | default: "heart" }} is through his {{ body-part | default: "stomach" }}.
+The {{ comparator | default: "bigger" }} they are, the {{ comparator | default: "harder" }} they fall.
+The early {{ animal | default: "bird" }} catches the {{ animal | default: "worm" }}.
+The {{ adjective | default: "last "}} straw breaks the {{ animal | default: "camel" }}'s back.
+The pen is {{ comparator | default: "mightier" }} than the sword.
+There are only {{ number | default: "twenty-four" }} hours in a day.
+There are {{ number | default: "two" }} sides to every story.
+There's more than {{ number | default: "one" }} ways to skin a {{ animal | default: "cat" }}.
+{{ number | default: "Two", capitalize }} heads are {{ comparator | default: "better" }} than {{ number | default: "one" }}.
+{{ number | default: "Two", capitalize }} wrongs don't {{ transitive-action | default: "make" }} a right.
+What's {{ adjective | default: "good" }} for the {{ animal | default: "goose" }} is {{ adjective | default: "good" }} for the gander.
+When the {{ animal | default: "cat" }} is away, the mice will {{ intransitive-action | default: "play" }}.
+When you fall off the {{ animal | default: "horse" }}, get back up again.
+You can lead a {{ animal | default: "horse" }} to water, but you can't make him {{ intransitive-action | default: "drink" }}.
+You can't teach an {{ adjective | default: "old" }} {{ animal | default: "dog" }} new tricks.
+You're never too {{ adjective | default: "old" }} to learn.

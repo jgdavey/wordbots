@@ -20,47 +20,39 @@ bison
 boar
 buffalo
 butterfly
+calf
 camel
 canary
 caribou
 cat
 caterpillar
 cattle
-chamois
 cheetah
 chicken
 chimpanzee
 chinchilla
 chipmunk
-chough
 clam
 cobra
 cockroach
 cod
-cormorant
 cow
 coyote
 crab
 crane
 crocodile
 crow
-curlew
 deer
 dinosaur
 dog
 dogfish
 dolphin
 donkey
-dotterel
 dove
 dragonfly
 duck
-dugong
-dunlin
 eagle
-echidna
 eel
-eland
 elephant
 elephant seal
 elk
@@ -73,7 +65,6 @@ flamingo
 fox
 frog
 galago
-gaur
 gazelle
 gerbil
 giant panda
@@ -85,13 +76,10 @@ goldfinch
 goldfish
 goose
 gorilla
-goshawk
 grasshopper
 grouse
-guanaco
 guinea fowl
 guinea pig
-gull
 hamster
 hare
 hawk
@@ -111,9 +99,6 @@ jellyfish
 kangaroo
 koala
 komodo dragon
-kouprey
-kudu
-lapwing
 lark
 lemur
 leopard
@@ -122,16 +107,11 @@ lizard
 llama
 lobster
 locust
-loris
 louse
-lyrebird
-magpie
 mallard
 mammoth
 manatee
-marten
 meerkat
-mink
 mole
 monkey
 moose
@@ -144,8 +124,6 @@ nightingale
 octopus
 okapi
 opossum
-oryx
-ostrich
 ostritch
 otter
 owl
@@ -172,7 +150,6 @@ raccoon
 ram
 rat
 raven
-red deer
 red panda
 reindeer
 rhinoceros
@@ -208,7 +185,6 @@ tortoise
 trout
 turkey
 turtle
-vicuña
 viper
 vulture
 wallaby
@@ -220,7 +196,6 @@ whale
 wolf
 wolverine
 wombat
-woodcock
 woodpecker
 worm
 yak

@@ -3,17 +3,11 @@ bake
 bang
 beat
 believe
-bite
 blast
 blend
 blink
 boast
-boil
-broil
-bump
 cackle
-catch
-chase
 chatter
 chime
 chirp
@@ -22,9 +16,7 @@ count
 crawl
 crush
 cry
-cut
 dance
-dash
 die
 dream
 dress
@@ -33,7 +25,6 @@ drive
 eat
 enter
 faint
-fix
 flip
 float
 flock
@@ -44,6 +35,7 @@ gallop
 giggle
 groan
 growl
+hear
 heat
 help
 hide
@@ -65,11 +57,12 @@ mix
 move
 paddle
 pass
+perceive
 play
-please
 poach
 prepare
 pretend
+puke
 pull
 push
 rattle
@@ -110,7 +103,6 @@ stamp
 stand
 step
 stroll
-stuff
 stumble
 swim
 swing
