@@ -59,7 +59,7 @@
     (when-let [idx (get @index (keyword part-of-speech))]
       (rand-nth idx))))
 
-(defn extract-default [args]
+(defn extract-default [_ & args]
   (some #(when (= 'default (:modifier/name %))
            (first (:modifier/args %)))
         args))
@@ -67,10 +67,15 @@
 (defn madlib-word [sym & args]
   (if-let [replacement (maybe-random-entry sym)]
     (reduce modify replacement args)
-    (extract-default args)))
+    (apply extract-default sym args)))
 
 (defn generate* [proverb-template]
-  (template/evaluate proverb-template madlib-word))
+  (let [default (template/evaluate proverb-template extract-default)]
+    (loop [i 5]
+      (let [genned (template/evaluate proverb-template madlib-word)]
+        (if (and (= genned default) (pos? i))
+          (recur (dec i))
+          genned)))))
 
 (defrecord Madbot [proverbs]
   p/Bot
@@ -85,4 +90,4 @@
 (comment
   (def b (bot))
   (p/init b)
-  (p/generate b))
+  (p/generate b {}))
