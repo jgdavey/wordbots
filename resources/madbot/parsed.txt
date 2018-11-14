@@ -10,7 +10,6 @@ Beauty is in the {{ body-part | default: "eye" }} of the beholder.
 Beauty is only {{ body-part | default: "skin" }}-deep.
 {{ animal | default: "Birds", plural, capitalize}} of a feather {{ intransitive-action | default: "flock" }} together.
 Curiosity killed the {{ animal | default: "cat" }}.
-Dare to be {{ adjective | default: "different" }}.
 Don't {{ transitive-action | default: "bet" }} the {{ animal | default: "cow" }} if you need the milk.
 Don't {{ transitive-action | default: "bite" }} the {{ body-part | default: "hand" }} that feeds you.
 Don't {{ transitive-action | default: "count" }} your {{ animal | default: "chickens", plural }} before they hatch.
